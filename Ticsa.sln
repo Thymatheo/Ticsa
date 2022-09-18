@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32002.185
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticsa", "Ticsa\Ticsa.csproj", "{B42CA290-B8D2-4529-86F4-D1251A324BEA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticsa.DAL", "Ticsa.DAL\Ticsa.DAL.csproj", "{24802CFF-27C3-43BB-B23C-AE0C3B06D83F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticsa.BLL", "Ticsa.BLL\Ticsa.BLL.csproj", "{CFF03531-14E9-4493-A84C-20ADC50CB721}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B42CA290-B8D2-4529-86F4-D1251A324BEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B42CA290-B8D2-4529-86F4-D1251A324BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B42CA290-B8D2-4529-86F4-D1251A324BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B42CA290-B8D2-4529-86F4-D1251A324BEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24802CFF-27C3-43BB-B23C-AE0C3B06D83F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24802CFF-27C3-43BB-B23C-AE0C3B06D83F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24802CFF-27C3-43BB-B23C-AE0C3B06D83F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24802CFF-27C3-43BB-B23C-AE0C3B06D83F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFF03531-14E9-4493-A84C-20ADC50CB721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFF03531-14E9-4493-A84C-20ADC50CB721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFF03531-14E9-4493-A84C-20ADC50CB721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFF03531-14E9-4493-A84C-20ADC50CB721}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D62ECAB9-8E95-4B4E-8FF5-A5BAEE66A18A}
+	EndGlobalSection
+EndGlobal

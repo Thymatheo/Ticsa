@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="Ticsa.UserControls.OrdersUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ViewModel="clr-namespace:Ticsa.ViewModels"
+             mc:Ignorable="d"    
+             HorizontalAlignment="Stretch"
+	         VerticalAlignment="Stretch"
+	         HorizontalContentAlignment="Stretch"
+	         VerticalContentAlignment="Stretch">
+    <UserControl.DataContext>
+        <ViewModel:OrderUCVM x:Name="Model"/>
+    </UserControl.DataContext>
+    <Grid VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Button Content="Reset" Click="Reset_Click" Margin="5" Width="400" MaxWidth="400" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Grid.Column="0">
+            <ListView x:Name="OrderListView" 
+                      Width="400" MaxWidth="400" 
+                      Margin="5" Padding="5" 
+                      SelectionMode="Single" ItemsSource="{Binding Orders, UpdateSourceTrigger=PropertyChanged}" 
+                      VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True" 
+                      SelectionChanged="OrderListView_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
+                        <GridViewColumn Header="IdPartner" DisplayMemberBinding="{Binding IdPartner}"/>
+                        <GridViewColumn Header="Order Date" DisplayMemberBinding="{Binding OrderDate}"/>
+                        <GridViewColumn Header="Order Tag" DisplayMemberBinding="{Binding OrderTag}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="200" Width="200" Margin="5">
+                <TextBlock Text="Client :" Margin="5"/>
+                <ComboBox x:Name="ClientComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Partners, UpdateSourceTrigger=PropertyChanged}" 
+                    DisplayMemberPath="FirstName"/>
+                <TextBlock Text="Date de commande :"/>
+                <DatePicker x:Name="OrderDatePicker" Margin="5"/>
+                <TextBlock Text="Tag de la Commande :"/>
+                <TextBox x:Name="OrderTagTextBox" Margin="5"/>
+                <Button Content="Ajouter" Click="AddOrder_click" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Grid.Column="1">
+            <ListView x:Name="LotsListView" 
+                      Width="400" MaxWidth="400" 
+                      Margin="5" Padding="5" 
+                      SelectionMode="Single" 
+                      ItemsSource="{Binding OrderContents, UpdateSourceTrigger=PropertyChanged}" 
+                      VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
+                        <GridViewColumn Header="IdLot" DisplayMemberBinding="{Binding IdLot}"/>
+                        <GridViewColumn Header="IdOrder" DisplayMemberBinding="{Binding IdOrder}"/>
+                        <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="200" Width="200" Margin="5">
+                <TextBlock Text="Lots :"/>
+                <ComboBox x:Name="LotsComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Lots, UpdateSourceTrigger=PropertyChanged}" 
+                    DisplayMemberPath="Label"/>
+                <TextBlock Text="Order :"/>
+                <ComboBox x:Name="OrdersComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Orders, UpdateSourceTrigger=PropertyChanged}" 
+                    DisplayMemberPath="OrderTag"/>
+                <TextBlock Text="Quantité :"/>
+                <TextBox x:Name="QuantityTextBox" Margin="5"/>
+                <Button Content="Ajouter" Click="AddContent_Click" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

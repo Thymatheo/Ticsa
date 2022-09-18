@@ -1,0 +1,26 @@
+﻿<Window x:Class="Ticsa.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Ticsa"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="720" Width="1280"   
+        HorizontalAlignment="Stretch"
+	    VerticalAlignment="Stretch"
+	    HorizontalContentAlignment="Stretch"
+	    VerticalContentAlignment="Stretch"
+        ResizeMode="NoResize">
+    <Grid Background="Transparent" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Menu x:Name="MainMenu" Grid.Row="0">
+            <MenuItem Header="Gammes" Click="GammesMenuItem_Click" Margin="5"/>
+            <MenuItem Header="Orders" Click="OrdersMenuItem_Click" Margin="5"/>
+            <MenuItem Header="Partners" Click="PartnersMenuItem_Click" Margin="5"/>
+        </Menu>
+        <ContentControl x:Name="MainContentControl" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1"/>
+    </Grid>
+</Window>

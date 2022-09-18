@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ticsa.BLL\Ticsa.BLL.csproj" />
+    <ProjectReference Include="..\Ticsa.DAL\Ticsa.DAL.csproj" />
+  </ItemGroup>
+
+</Project>

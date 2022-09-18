@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="Ticsa.UserControls.GammesUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ViewModel="clr-namespace:Ticsa.ViewModels"
+             mc:Ignorable="d"
+	         VerticalAlignment="Stretch"
+	         VerticalContentAlignment="Stretch"
+             Background="Transparent">
+    <UserControl.DataContext>
+        <ViewModel:GammesUCVM x:Name="Model"/>
+    </UserControl.DataContext>
+    <Grid VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Button Content="Reset" Click="Reset_Click" Margin="5" Width="400" MaxWidth="400" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Grid.Column="0">
+            <ListView x:Name="GammesListView" Width="400" MaxWidth="400" Margin="5" Padding="5" SelectionMode="Single" ItemsSource="{Binding Gammes, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True" SelectionChanged="GammesListView_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
+                        <GridViewColumn Header="IdPartner" DisplayMemberBinding="{Binding IdPartner}"/>
+                        <GridViewColumn Header="Label" DisplayMemberBinding="{Binding Label}"/>
+                        <GridViewColumn Header="Summary" DisplayMemberBinding="{Binding Summary}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="200" Width="200" Margin="5">
+                <TextBlock Text="Partener :" Margin="5"/>
+                <ComboBox x:Name="PartnerComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Partners, UpdateSourceTrigger=PropertyChanged}" 
+                    DisplayMemberPath="FirstName"/>
+                <TextBlock Text="Label :"/>
+                <TextBox x:Name="GammeLabelTextBox" Margin="5"/>
+                <TextBlock Text="Description :" Margin="5"/>
+                <TextBox x:Name="SummaryTextBox" Margin="5" MaxLines="10" AcceptsReturn="True"/>
+                <Button Content="Ajouter" Click="AddGammes_Click" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Grid.Column="1">
+            <ListView x:Name="LotsListView" Width="400" MaxWidth="400" Margin="5" Padding="5" SelectionMode="Single" ItemsSource="{Binding Lots, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
+                        <GridViewColumn Header="Label" DisplayMemberBinding="{Binding Label}"/>
+                        <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}"/>
+                        <GridViewColumn Header="IdGamme" DisplayMemberBinding="{Binding IdGamme}"/>
+                        <GridViewColumn Header="Date de reception" DisplayMemberBinding="{Binding EntryDate}"/>
+                        <GridViewColumn Header="Date d'expiration" DisplayMemberBinding="{Binding ExpirationDate}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="200" Width="200" Margin="5">
+                <TextBlock Text="Label :"/>
+                <TextBox x:Name="LotLabelTextBox" Margin="5"/>
+                <TextBlock Text="Quantité :"/>
+                <TextBox x:Name="QuantityTextBox" Margin="5"/>
+                <ComboBox x:Name="GammesComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Gammes, UpdateSourceTrigger=PropertyChanged}" 
+                    DisplayMemberPath="Label"/>
+                <TextBlock Text="Date de reception :"/>
+                <DatePicker x:Name="EntryDateLotsDatePicker" Margin="5"/>
+                <TextBlock Text="Date d'expiration :"/>
+                <DatePicker x:Name="ExpirationDateLotsDatePicker" Margin="5"/>
+                <Button Content="Ajouter" Click="AddLots_Click" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
