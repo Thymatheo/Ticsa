@@ -6,24 +6,16 @@ namespace Ticsa.DAL.DP {
         }
 
         protected override object BuildAddParam(Gammes entity) => new {
-            InputLabelGammes = entity.Label,
-            InputSummaryGammes = entity.Summary,
-            InputIdPartnerGammes = entity.IdPartner
-        };
-
-        protected override object BuildDeleteParam(int id) => new {
-            InputIdGammes = id
-        };
-
-        protected override object BuildGetByIdParam(int id) => new {
-            InputIdGammes = id
+            entity.IdPartner,
+            entity.Label,
+            entity.Summary,
         };
 
         protected override object BuildUpdateParam(Gammes entity) => new {
-            InputToPutLabelGammes = entity.Label,
-            InputToPutSummaryGammes = entity.Summary,
-            InputToPutIdPartnerGammes = entity.IdPartner,
-            InputIdGammes = entity.Id
+            entity.IdPartner,
+            entity.Label,
+            entity.Summary,
+            entity.Id
         };
     }
 }

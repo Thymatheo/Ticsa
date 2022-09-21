@@ -27,10 +27,14 @@ namespace Ticsa.UserControls {
 
             if (GammesComboBox.SelectedItem is null) MessageBox.Show("Veuillez selectionner un Producteur");
             else if (!int.TryParse(QuantityTextBox.Text, out int quantity)) MessageBox.Show("Veuillez selectionner une quantité valide");
+            else if (ExpirationDateLotsDatePicker.SelectedDate is null) MessageBox.Show("Veuillez selectionner une date d'expiration");
+            else if (EntryDateLotsDatePicker.SelectedDate is null) MessageBox.Show("Veuillez selectionner une date d'entrée");
             else {
                 await Model.LotsBS.Add(new() {
                     IdGamme = (GammesComboBox.SelectedItem as Gammes)!.Id,
                     Label = LotLabelTextBox.Text,
+                    EntryDate = EntryDateLotsDatePicker.SelectedDate.Value,
+                    ExpirationDate = ExpirationDateLotsDatePicker.SelectedDate.Value,
                     Quantity = quantity
                 });
                 await Model.LoadLots();

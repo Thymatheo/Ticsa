@@ -15,7 +15,7 @@ INSERT INTO PartnerTypes(Label) VALUES
 
 CREATE TABLE Partners(
 	Id INT IDENTITY(1,1) NOT NULL,
-    IdPartnerType INT NOT NULL,
+        IdPartnerType INT NOT NULL,
 	FirstName VARCHAR(255) NOT NULL,
 	LastName VARCHAR(255) NOT NULL,
 	CompanyName VARCHAR(255) NOT NULL,
@@ -40,26 +40,26 @@ CREATE TABLE Gammes(
 	Id INT IDENTITY(1,1) NOT NULL,
 	Label VARCHAR(255) NOT NULL,
 	Summary VARCHAR(255) NOT NULL,
-    IdPartner INT NOT NULL,
+        IdPartner INT NOT NULL,
 	CONSTRAINT FK_Partners_Id_Gammes_IdPartner FOREIGN KEY (IdPartner) REFERENCES Partners(Id),
 	CONSTRAINT PK_Gammes_Id PRIMARY KEY CLUSTERED (Id)
 );
 
 CREATE TABLE Lots(
 	Id INT IDENTITY(1,1) NOT NULL,
-    Label VARCHAR(255) NOT NULL,
+        Label VARCHAR(255) NOT NULL,
 	Quantity INT NOT NULL,
-    IdGamme INT NOT NULL,
-	EntryDate DATETIME NOT NULL,
-	ExpirationDate DATETIME NOT NULL,
-    CONSTRAINT FK_Gammes_Id_Lots_IdGamme FOREIGN KEY (IdGamme) REFERENCES Gammes(Id),
+        IdGamme INT NOT NULL,
+	EntryDate DATETIME2 NOT NULL,
+	ExpirationDate DATETIME2 NOT NULL,
+        CONSTRAINT FK_Gammes_Id_Lots_IdGamme FOREIGN KEY (IdGamme) REFERENCES Gammes(Id),
 	CONSTRAINT PK_Lots_Id PRIMARY KEY CLUSTERED (Id)
 );
 
 CREATE TABLE OrderContents(
 	Id INT IDENTITY(1,1) NOT NULL,
-    IdOrder INT NOT NULL,
-    IdLot INT NOT NULL,
+        IdOrder INT NOT NULL,
+        IdLot INT NOT NULL,
 	Quantity INT NOT NULL,
 	CONSTRAINT FK_Orders_Id_OrderContents_IdOrder FOREIGN KEY (IdOrder) REFERENCES Orders(Id),
 	CONSTRAINT FK_Lots_Id_OrderContents_IdLot FOREIGN KEY (IdLot) REFERENCES Lots(Id),

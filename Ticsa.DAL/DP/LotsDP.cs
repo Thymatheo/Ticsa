@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using System.Data.SqlTypes;
 using Ticsa.DAL.Models;
 
 namespace Ticsa.DAL.DP {
@@ -6,33 +7,24 @@ namespace Ticsa.DAL.DP {
         public LotsDP() : base("Lots") {
         }
 
-        public async Task<IEnumerable<Lots?>> GetbyIdGamme(int idGamme) => await GetConnection().QueryAsync<Lots?>($"{_SpGetAllLabel}ByIdGamme", new {
-            InputIdGammeLots = idGamme
-        }, commandType: System.Data.CommandType.StoredProcedure);
+        public async Task<IEnumerable<Lots?>> GetbyIdGamme(int idGamme) => await GetConnection().QueryAsync<Lots?>($"{_SpGetAllLabel}ByIdGamme", new { IdGamme = idGamme }, commandType: System.Data.CommandType.StoredProcedure);
 
         protected override object BuildAddParam(Lots entity) => new {
-            InputLabelLots = entity.Label,
-            InputQuantityLots = entity.Quantity,
-            InputIdGammeLots = entity.IdGamme,
-            InputEntryDateLots = entity.EntryDate,
-            InputExpirationDateLots = entity.ExpirationDate,
-        };
+            entity.Label,
+            entity.IdGamme,
+            entity.EntryDate,
+            entity.ExpirationDate,
+            entity.Quantity
 
-        protected override object BuildDeleteParam(int id) => new {
-            InputIdLots = id,
-        };
-
-        protected override object BuildGetByIdParam(int id) => new {
-            InputIdLots = id,
         };
 
         protected override object BuildUpdateParam(Lots entity) => new {
-            InputToPutLabelLots = entity.Label,
-            InputToPutQuantityLots = entity.Quantity,
-            InputToPutIdGammeLots = entity.IdGamme,
-            InputToPutEntryDateLots = entity.EntryDate,
-            InputToPutExpirationDateLots = entity.ExpirationDate,
-            InputIdLots = entity.Id
+            entity.Label,
+            entity.IdGamme,
+            entity.EntryDate,
+            entity.ExpirationDate,
+            entity.Quantity,
+            entity.Id
         };
     }
 }

@@ -6,39 +6,29 @@ namespace Ticsa.DAL.DP {
         public PartnersDP() : base("Partners") {
         }
 
-        public async Task<IEnumerable<Partners>> GetByIdType(int idType) => await GetConnection().QueryAsync<Partners>($"{_SpGetAllLabel}ByIdPartnerType", new {
-            InputIdPartnerTypePartners = idType
-        }, commandType: System.Data.CommandType.StoredProcedure);
+        public async Task<IEnumerable<Partners>> GetByIdType(int idType) => await GetConnection().QueryAsync<Partners>($"{_SpGetAllLabel}ByIdPartnerType", new { IdPartnerType = idType }, commandType: System.Data.CommandType.StoredProcedure);
 
         protected override object BuildAddParam(Partners entity) => new {
-            InputIdPartnerTypePartners = entity.IdPartnerType,
-            InputFirstNamePartners = entity.FirstName,
-            InputLastNamePartners = entity.LastName,
-            InputCompanyNamePartners = entity.CompanyName,
-            InputEmailPartners = entity.Email,
-            InputPhoneNumberPartners = entity.PhoneNumber,
-            InputPostalAddressPartners = entity.PostalAddress,
-            InputPostalCodePartners = entity.PostalCode
-        };
-
-        protected override object BuildDeleteParam(int id) => new {
-            InputIdPartners = id
-        };
-
-        protected override object BuildGetByIdParam(int id) => new {
-            InputIdPartners = id
+            entity.Email,
+            entity.FirstName,
+            entity.LastName,
+            entity.PhoneNumber,
+            entity.PostalCode,
+            entity.CompanyName,
+            entity.IdPartnerType,
+            entity.PostalAddress
         };
 
         protected override object BuildUpdateParam(Partners entity) => new {
-            InputIdPartnerTypePartners = entity.IdPartnerType,
-            InputFirstNamePartners = entity.FirstName,
-            InputLastNamePartners = entity.LastName,
-            InputCompanyNamePartners = entity.CompanyName,
-            InputEmailPartners = entity.Email,
-            InputPhoneNumberPartners = entity.PhoneNumber,
-            InputPostalAddressPartners = entity.PostalAddress,
-            InputPostalCodePartners = entity.PostalCode,
-            InputIdPartners = entity.Id
+            entity.Email,
+            entity.FirstName,
+            entity.LastName,
+            entity.PhoneNumber,
+            entity.PostalCode,
+            entity.CompanyName,
+            entity.IdPartnerType,
+            entity.PostalAddress,
+            entity.Id
         };
     }
 }

@@ -7,29 +7,19 @@ namespace Ticsa.DAL.DP {
         }
 
 
-        public async Task<IEnumerable<OrderContents>> GetByIdOrder(int idOrder) => await GetConnection().QueryAsync<OrderContents>($"{_SpGetAllLabel}ByIdOrder", new {
-            InputIdOrderOrderContents = idOrder
-        }, commandType: System.Data.CommandType.StoredProcedure);
+        public async Task<IEnumerable<OrderContents>> GetByIdOrder(int idOrder) => await GetConnection().QueryAsync<OrderContents>($"{_SpGetAllLabel}ByIdOrder", new { IdOrder = idOrder }, commandType: System.Data.CommandType.StoredProcedure);
 
         protected override object BuildAddParam(OrderContents entity) => new {
-            InputIdOrderOrderContents = entity.IdOrder,
-            InputIdLotOrderContents = entity.IdLot,
-            InputQuantityOrderContents = entity.Quantity
-        };
-
-        protected override object BuildDeleteParam(int id) => new {
-            InputIdOrderContents = id
-        };
-
-        protected override object BuildGetByIdParam(int id) => new {
-            InputIdOrderContents = id
+            entity.IdOrder,
+            entity.IdLot,
+            entity.Quantity,
         };
 
         protected override object BuildUpdateParam(OrderContents entity) => new {
-            InputToPutIdOrderOrderContents = entity.IdOrder,
-            InputToPutIdLotOrderContents = entity.IdLot,
-            InputToPutQuantityOrderContents = entity.Quantity,
-            InputIdOrderContents = entity.Id
+            entity.IdOrder,
+            entity.IdLot,
+            entity.Quantity,
+            entity.Id
         };
     }
 }

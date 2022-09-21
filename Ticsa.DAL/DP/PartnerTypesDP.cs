@@ -6,21 +6,12 @@ namespace Ticsa.DAL.DP {
         }
 
         protected override object BuildAddParam(PartnerTypes entity) => new {
-            InputLabelPartnerTypes = entity.Label
-        };
-
-        protected override object BuildDeleteParam(int id) => new {
-            InputIdPartnerTypes = id
-        };
-
-        protected override object BuildGetByIdParam(int id) => new {
-            InputIdPartnerTypes = id
+            entity.Label
         };
 
         protected override object BuildUpdateParam(PartnerTypes entity) => new {
-
-            InputToPutLabelPartnerTypes = entity.Label,
-            InputIdPartnerTypes = entity.Id
+            entity.Label,
+            entity.Id
         };
     }
 }

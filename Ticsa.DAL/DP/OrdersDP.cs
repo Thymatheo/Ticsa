@@ -6,24 +6,15 @@ namespace Ticsa.DAL.DP {
         }
 
         protected override object BuildAddParam(Orders entity) => new {
-            InputOrderDateOrders = entity.OrderDate,
-            InputIdPartnerOrders = entity.IdPartner,
-            InputOrderTagOrders = entity.OrderTag
+            entity.OrderTag,
+            entity.OrderDate,
+            entity.IdPartner,
         };
-
-        protected override object BuildDeleteParam(int id) => new {
-            InputIdOrders = id
-        };
-
-        protected override object BuildGetByIdParam(int id) => new {
-            InputIdOrders = id
-        };
-
         protected override object BuildUpdateParam(Orders entity) => new {
-            InputToPutOrderDateOrders = entity.OrderDate,
-            InputToPutIdPartnerOrders = entity.IdPartner,
-            InputToPutOrderTagOrders = entity.OrderTag,
-            InputIdOrders = entity.Id,
+            entity.OrderTag,
+            entity.OrderDate,
+            entity.IdPartner,
+            entity.Id
         };
     }
 }
