@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using System.Data.SqlTypes;
 using Ticsa.DAL.Models;
 
 namespace Ticsa.DAL.DP {
