@@ -17,14 +17,5 @@ namespace Ticsa.DAL.DP {
             entity.Quantity
 
         };
-
-        protected override object BuildUpdateParam(Lots entity) => new {
-            entity.Label,
-            entity.IdGamme,
-            entity.EntryDate,
-            entity.ExpirationDate,
-            entity.Quantity,
-            entity.Id
-        };
     }
 }

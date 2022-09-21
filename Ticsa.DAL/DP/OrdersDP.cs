@@ -10,11 +10,5 @@ namespace Ticsa.DAL.DP {
             entity.OrderDate,
             entity.IdPartner,
         };
-        protected override object BuildUpdateParam(Orders entity) => new {
-            entity.OrderTag,
-            entity.OrderDate,
-            entity.IdPartner,
-            entity.Id
-        };
     }
 }

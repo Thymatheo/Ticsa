@@ -18,17 +18,5 @@ namespace Ticsa.DAL.DP {
             entity.IdPartnerType,
             entity.PostalAddress
         };
-
-        protected override object BuildUpdateParam(Partners entity) => new {
-            entity.Email,
-            entity.FirstName,
-            entity.LastName,
-            entity.PhoneNumber,
-            entity.PostalCode,
-            entity.CompanyName,
-            entity.IdPartnerType,
-            entity.PostalAddress,
-            entity.Id
-        };
     }
 }

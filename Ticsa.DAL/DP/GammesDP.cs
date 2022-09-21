@@ -10,12 +10,5 @@ namespace Ticsa.DAL.DP {
             entity.Label,
             entity.Summary,
         };
-
-        protected override object BuildUpdateParam(Gammes entity) => new {
-            entity.IdPartner,
-            entity.Label,
-            entity.Summary,
-            entity.Id
-        };
     }
 }

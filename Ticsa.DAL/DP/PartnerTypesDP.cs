@@ -8,10 +8,5 @@ namespace Ticsa.DAL.DP {
         protected override object BuildAddParam(PartnerTypes entity) => new {
             entity.Label
         };
-
-        protected override object BuildUpdateParam(PartnerTypes entity) => new {
-            entity.Label,
-            entity.Id
-        };
     }
 }

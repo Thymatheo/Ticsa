@@ -14,12 +14,5 @@ namespace Ticsa.DAL.DP {
             entity.IdLot,
             entity.Quantity,
         };
-
-        protected override object BuildUpdateParam(OrderContents entity) => new {
-            entity.IdOrder,
-            entity.IdLot,
-            entity.Quantity,
-            entity.Id
-        };
     }
 }
