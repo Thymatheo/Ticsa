@@ -16,7 +16,7 @@ namespace Ticsa.DAL.DP {
             _SpAddLabel = $"Post{labelDP}";
             _SpUpdateLabel = $"Put{labelDP}";
             _SpDeleteLabel = $"Delete{labelDP}";
-            _SpGetAllLabel = $"GetAll{labelDP}";
+            _SpGetAllLabel = $"Get{labelDP}s";
             _SpGetByIdLabel = $"Get{labelDP}";
         }
 

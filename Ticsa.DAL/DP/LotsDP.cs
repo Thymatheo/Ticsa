@@ -6,7 +6,7 @@ namespace Ticsa.DAL.DP {
         public LotsDP() : base("Lots") {
         }
 
-        public async Task<IEnumerable<Lots?>> GetbyIdGamme(int idGamme) => await GetConnection().QueryAsync<Lots?>($"{_SpGetAllLabel}ByIdGamme", new { IdGamme = idGamme }, commandType: System.Data.CommandType.StoredProcedure);
+        public async Task<IEnumerable<Lots?>> GetbyIdGamme(int idGamme) => await GetConnection().QueryAsync<Lots?>($"{_SpGetByIdLabel}ByIdGamme", new { IdGamme = idGamme }, commandType: System.Data.CommandType.StoredProcedure);
 
         protected override object BuildAddParam(Lots entity) => new {
             entity.Label,

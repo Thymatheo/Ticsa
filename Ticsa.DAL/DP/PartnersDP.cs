@@ -6,7 +6,7 @@ namespace Ticsa.DAL.DP {
         public PartnersDP() : base("Partners") {
         }
 
-        public async Task<IEnumerable<Partners>> GetByIdType(int idType) => await GetConnection().QueryAsync<Partners>($"{_SpGetAllLabel}ByIdPartnerType", new { IdPartnerType = idType }, commandType: System.Data.CommandType.StoredProcedure);
+        public async Task<IEnumerable<Partners>> GetByIdType(int idType) => await GetConnection().QueryAsync<Partners>($"{_SpGetByIdLabel}ByIdPartnerType", new { IdPartnerType = idType }, commandType: System.Data.CommandType.StoredProcedure);
 
         protected override object BuildAddParam(Partners entity) => new {
             entity.Email,

@@ -65,303 +65,8 @@ CREATE TABLE OrderContents(
 	CONSTRAINT FK_Lots_Id_OrderContents_IdLot FOREIGN KEY (IdLot) REFERENCES Lots(Id),
 	CONSTRAINT PK_OrderContents_Id PRIMARY KEY CLUSTERED (Id)
 );
-
-CREATE PROCEDURE PostPartnerTypes
-                @InputLabelPartnerTypes varchar(255)
-AS
-        INSERT INTO [PartnerTypes] (
-                [Label]
-        )
-        VALUES (
-                @InputLabelPartnerTypes
-        );
-        SELECT
-                *
-        FROM
-                [PartnerTypes]
-        WHERE
-                [PartnerTypes].[Id] = SCOPE_IDENTITY();
 GO
-CREATE PROCEDURE PostPartners
-                @InputIdPartnerTypePartners int,
-                @InputFirstNamePartners varchar(255),
-                @InputLastNamePartners varchar(255),
-                @InputCompanyNamePartners varchar(255),
-                @InputEmailPartners varchar(255),
-                @InputPhoneNumberPartners int,
-                @InputPostalAddressPartners varchar(255),
-                @InputPostalCodePartners int
-AS
-        INSERT INTO [Partners] (
-                [IdPartnerType],
-                [FirstName],
-                [LastName],
-                [CompanyName],
-                [Email],
-                [PhoneNumber],
-                [PostalAddress],
-                [PostalCode]
-        )
-        VALUES (
-                @InputIdPartnerTypePartners,
-                @InputFirstNamePartners,
-                @InputLastNamePartners,
-                @InputCompanyNamePartners,
-                @InputEmailPartners,
-                @InputPhoneNumberPartners,
-                @InputPostalAddressPartners,
-                @InputPostalCodePartners
-        );
-        SELECT
-                *
-        FROM
-                [Partners]
-        WHERE
-                [Partners].[Id] = SCOPE_IDENTITY();
-GO
-CREATE PROCEDURE PostOrders
-                @InputOrderDateOrders datetime,
-                @InputOrderTagOrders varchar(255),
-                @InputIdPartnerOrders int
-AS
-        INSERT INTO [Orders] (
-                [OrderDate],
-                [OrderTag],
-                [IdPartner]
-        )
-        VALUES (
-                @InputOrderDateOrders,
-                @InputOrderTagOrders,
-                @InputIdPartnerOrders
-        );
-        SELECT
-                *
-        FROM
-                [Orders]
-        WHERE
-                [Orders].[Id] = SCOPE_IDENTITY();
-GO
-CREATE PROCEDURE PostGammes
-                @InputLabelGammes varchar(255),
-                @InputSummaryGammes varchar(255),
-                @InputIdPartnerGammes int
-AS
-        INSERT INTO [Gammes] (
-                [Label],
-                [Summary],
-                [IdPartner]
-        )
-        VALUES (
-                @InputLabelGammes,
-                @InputSummaryGammes,
-                @InputIdPartnerGammes
-        );
-        SELECT
-                *
-        FROM
-                [Gammes]
-        WHERE
-                [Gammes].[Id] = SCOPE_IDENTITY();
-GO
-CREATE PROCEDURE PostLots
-                @InputLabelLots varchar(255),
-                @InputQuantityLots int,
-                @InputIdGammeLots int,
-                @InputEntryDateLots datetime,
-                @InputExpirationDateLots datetime
-AS
-        INSERT INTO [Lots] (
-                [Label],
-                [Quantity],
-                [IdGamme],
-                [EntryDate],
-                [ExpirationDate]
-        )
-        VALUES (
-                @InputLabelLots,
-                @InputQuantityLots,
-                @InputIdGammeLots,
-                @InputEntryDateLots,
-                @InputExpirationDateLots
-        );
-        SELECT
-                *
-        FROM
-                [Lots]
-        WHERE
-                [Lots].[Id] = SCOPE_IDENTITY();
-GO
-CREATE PROCEDURE PostOrderContents
-                @InputIdOrderOrderContents int,
-                @InputIdLotOrderContents int,
-                @InputQuantityOrderContents int
-AS
-        INSERT INTO [OrderContents] (
-                [IdOrder],
-                [IdLot],
-                [Quantity]
-        )
-        VALUES (
-                @InputIdOrderOrderContents,
-                @InputIdLotOrderContents,
-                @InputQuantityOrderContents
-        );
-        SELECT
-                *
-        FROM
-                [OrderContents]
-        WHERE
-                [OrderContents].[Id] = SCOPE_IDENTITY();
-GO
-CREATE PROCEDURE PutPartnerTypes
-                @InputToPutLabelPartnerTypes varchar(255),
-                @InputIdPartnerTypes int
-AS
-        UPDATE [PartnerTypes]
-        SET
-                [PartnerTypes].[Label] = @InputToPutLabelPartnerTypes
-        WHERE
-                [PartnerTypes].[Id] = @InputIdPartnerTypes;
-GO
-CREATE PROCEDURE PutPartners
-                @InputToPutIdPartnerTypePartners int,
-                @InputToPutFirstNamePartners varchar(255),
-                @InputToPutLastNamePartners varchar(255),
-                @InputToPutCompanyNamePartners varchar(255),
-                @InputToPutEmailPartners varchar(255),
-                @InputToPutPhoneNumberPartners int,
-                @InputToPutPostalAddressPartners varchar(255),
-                @InputToPutPostalCodePartners int,
-                @InputIdPartners int
-AS
-        UPDATE [Partners]
-        SET
-                [Partners].[IdPartnerType] = @InputToPutIdPartnerTypePartners,
-                [Partners].[FirstName] = @InputToPutFirstNamePartners,
-                [Partners].[LastName] = @InputToPutLastNamePartners,
-                [Partners].[CompanyName] = @InputToPutCompanyNamePartners,
-                [Partners].[Email] = @InputToPutEmailPartners,
-                [Partners].[PhoneNumber] = @InputToPutPhoneNumberPartners,
-                [Partners].[PostalAddress] = @InputToPutPostalAddressPartners,
-                [Partners].[PostalCode] = @InputToPutPostalCodePartners
-        WHERE
-                [Partners].[Id] = @InputIdPartners;
-GO
-CREATE PROCEDURE PutOrders
-                @InputToPutOrderDateOrders datetime,
-                @InputToPutOrderTagOrders varchar(255),
-                @InputToPutIdPartnerOrders int,
-                @InputIdOrders int
-AS
-        UPDATE [Orders]
-        SET
-                [Orders].[OrderDate] = @InputToPutOrderDateOrders,
-                [Orders].[OrderTag] = @InputToPutOrderTagOrders,
-                [Orders].[IdPartner] = @InputToPutIdPartnerOrders
-        WHERE
-                [Orders].[Id] = @InputIdOrders;
-GO
-CREATE PROCEDURE PutGammes
-                @InputToPutLabelGammes varchar(255),
-                @InputToPutSummaryGammes varchar(255),
-                @InputToPutIdPartnerGammes int,
-                @InputIdGammes int
-AS
-        UPDATE [Gammes]
-        SET
-                [Gammes].[Label] = @InputToPutLabelGammes,
-                [Gammes].[Summary] = @InputToPutSummaryGammes,
-                [Gammes].[IdPartner] = @InputToPutIdPartnerGammes
-        WHERE
-                [Gammes].[Id] = @InputIdGammes;
-GO
-CREATE PROCEDURE PutLots
-                @InputToPutLabelLots varchar(255),
-                @InputToPutQuantityLots int,
-                @InputToPutIdGammeLots int,
-                @InputToPutEntryDateLots datetime,
-                @InputToPutExpirationDateLots datetime,
-                @InputIdLots int
-AS
-        UPDATE [Lots]
-        SET
-                [Lots].[Label] = @InputToPutLabelLots,
-                [Lots].[Quantity] = @InputToPutQuantityLots,
-                [Lots].[IdGamme] = @InputToPutIdGammeLots,
-                [Lots].[EntryDate] = @InputToPutEntryDateLots,
-                [Lots].[ExpirationDate] = @InputToPutExpirationDateLots
-        WHERE
-                [Lots].[Id] = @InputIdLots;
-GO
-CREATE PROCEDURE PutOrderContents
-                @InputToPutIdOrderOrderContents int,
-                @InputToPutIdLotOrderContents int,
-                @InputToPutQuantityOrderContents int,
-                @InputIdOrderContents int
-AS
-        UPDATE [OrderContents]
-        SET
-                [OrderContents].[IdOrder] = @InputToPutIdOrderOrderContents,
-                [OrderContents].[IdLot] = @InputToPutIdLotOrderContents,
-                [OrderContents].[Quantity] = @InputToPutQuantityOrderContents
-        WHERE
-                [OrderContents].[Id] = @InputIdOrderContents;
-GO
-CREATE PROCEDURE DeletePartnerTypes
-                @InputIdPartnerTypes int
-AS
-        DELETE
-        FROM
-                [PartnerTypes]
-        WHERE
-                [PartnerTypes].[Id] = @InputIdPartnerTypes;
-GO
-CREATE PROCEDURE DeletePartners
-                @InputIdPartners int
-AS
-        DELETE
-        FROM
-                [Partners]
-        WHERE
-                [Partners].[Id] = @InputIdPartners;
-GO
-CREATE PROCEDURE DeleteOrders
-                @InputIdOrders int
-AS
-        DELETE
-        FROM
-                [Orders]
-        WHERE
-                [Orders].[Id] = @InputIdOrders;
-GO
-CREATE PROCEDURE DeleteGammes
-                @InputIdGammes int
-AS
-        DELETE
-        FROM
-                [Gammes]
-        WHERE
-                [Gammes].[Id] = @InputIdGammes;
-GO
-CREATE PROCEDURE DeleteLots
-                @InputIdLots int
-AS
-        DELETE
-        FROM
-                [Lots]
-        WHERE
-                [Lots].[Id] = @InputIdLots;
-GO
-CREATE PROCEDURE DeleteOrderContents
-                @InputIdOrderContents int
-AS
-        DELETE
-        FROM
-                [OrderContents]
-        WHERE
-                [OrderContents].[Id] = @InputIdOrderContents;
-GO
-CREATE PROCEDURE GetAllPartnerTypes
+CREATE PROCEDURE GetPartnerTypess
 AS
         SELECT
                 Id = [PartnerTypes].[Id],
@@ -369,7 +74,18 @@ AS
         FROM
                 [PartnerTypes];
 GO
-CREATE PROCEDURE GetAllPartners
+CREATE PROCEDURE GetPartnerTypes
+                @Id int
+AS
+        SELECT
+                Id = [PartnerTypes].[Id],
+                Label = [PartnerTypes].[Label]
+        FROM
+                [PartnerTypes]
+        WHERE
+                [PartnerTypes].[Id] = @Id;
+GO
+CREATE PROCEDURE GetPartnerss
 AS
         SELECT
                 Id = [Partners].[Id],
@@ -384,7 +100,43 @@ AS
         FROM
                 [Partners];
 GO
-CREATE PROCEDURE GetAllOrders
+CREATE PROCEDURE GetPartners
+                @Id int
+AS
+        SELECT
+                Id = [Partners].[Id],
+                IdPartnerType = [Partners].[IdPartnerType],
+                FirstName = [Partners].[FirstName],
+                LastName = [Partners].[LastName],
+                CompanyName = [Partners].[CompanyName],
+                Email = [Partners].[Email],
+                PhoneNumber = [Partners].[PhoneNumber],
+                PostalAddress = [Partners].[PostalAddress],
+                PostalCode = [Partners].[PostalCode]
+        FROM
+                [Partners]
+        WHERE
+                [Partners].[Id] = @Id;
+GO
+CREATE PROCEDURE GetPartnersByIdPartnerType
+                @IdPartnerType int
+AS
+        SELECT
+                Id = [Partners].[Id],
+                IdPartnerType = [Partners].[IdPartnerType],
+                FirstName = [Partners].[FirstName],
+                LastName = [Partners].[LastName],
+                CompanyName = [Partners].[CompanyName],
+                Email = [Partners].[Email],
+                PhoneNumber = [Partners].[PhoneNumber],
+                PostalAddress = [Partners].[PostalAddress],
+                PostalCode = [Partners].[PostalCode]
+        FROM
+                [Partners]
+        WHERE
+                [Partners].[IdPartnerType] = @IdPartnerType;
+GO
+CREATE PROCEDURE GetOrderss
 AS
         SELECT
                 Id = [Orders].[Id],
@@ -394,7 +146,33 @@ AS
         FROM
                 [Orders];
 GO
-CREATE PROCEDURE GetAllGammes
+CREATE PROCEDURE GetOrders
+                @Id int
+AS
+        SELECT
+                Id = [Orders].[Id],
+                OrderDate = [Orders].[OrderDate],
+                OrderTag = [Orders].[OrderTag],
+                IdPartner = [Orders].[IdPartner]
+        FROM
+                [Orders]
+        WHERE
+                [Orders].[Id] = @Id;
+GO
+CREATE PROCEDURE GetOrdersByIdPartner
+                @IdPartner int
+AS
+        SELECT
+                Id = [Orders].[Id],
+                OrderDate = [Orders].[OrderDate],
+                OrderTag = [Orders].[OrderTag],
+                IdPartner = [Orders].[IdPartner]
+        FROM
+                [Orders]
+        WHERE
+                [Orders].[IdPartner] = @IdPartner;
+GO
+CREATE PROCEDURE GetGammess
 AS
         SELECT
                 Id = [Gammes].[Id],
@@ -404,7 +182,33 @@ AS
         FROM
                 [Gammes];
 GO
-CREATE PROCEDURE GetAllLots
+CREATE PROCEDURE GetGammes
+                @Id int
+AS
+        SELECT
+                Id = [Gammes].[Id],
+                Label = [Gammes].[Label],
+                Summary = [Gammes].[Summary],
+                IdPartner = [Gammes].[IdPartner]
+        FROM
+                [Gammes]
+        WHERE
+                [Gammes].[Id] = @Id;
+GO
+CREATE PROCEDURE GetGammesByIdPartner
+                @IdPartner int
+AS
+        SELECT
+                Id = [Gammes].[Id],
+                Label = [Gammes].[Label],
+                Summary = [Gammes].[Summary],
+                IdPartner = [Gammes].[IdPartner]
+        FROM
+                [Gammes]
+        WHERE
+                [Gammes].[IdPartner] = @IdPartner;
+GO
+CREATE PROCEDURE GetLotss
 AS
         SELECT
                 Id = [Lots].[Id],
@@ -416,7 +220,37 @@ AS
         FROM
                 [Lots];
 GO
-CREATE PROCEDURE GetAllOrderContents
+CREATE PROCEDURE GetLots
+                @Id int
+AS
+        SELECT
+                Id = [Lots].[Id],
+                Label = [Lots].[Label],
+                Quantity = [Lots].[Quantity],
+                IdGamme = [Lots].[IdGamme],
+                EntryDate = [Lots].[EntryDate],
+                ExpirationDate = [Lots].[ExpirationDate]
+        FROM
+                [Lots]
+        WHERE
+                [Lots].[Id] = @Id;
+GO
+CREATE PROCEDURE GetLotsByIdGamme
+                @IdGamme int
+AS
+        SELECT
+                Id = [Lots].[Id],
+                Label = [Lots].[Label],
+                Quantity = [Lots].[Quantity],
+                IdGamme = [Lots].[IdGamme],
+                EntryDate = [Lots].[EntryDate],
+                ExpirationDate = [Lots].[ExpirationDate]
+        FROM
+                [Lots]
+        WHERE
+                [Lots].[IdGamme] = @IdGamme;
+GO
+CREATE PROCEDURE GetOrderContentss
 AS
         SELECT
                 Id = [OrderContents].[Id],
@@ -426,20 +260,94 @@ AS
         FROM
                 [OrderContents];
 GO
-CREATE PROCEDURE GetPartnerTypes
-                @InputIdPartnerTypes int
+CREATE PROCEDURE GetOrderContents
+                @Id int
 AS
+        SELECT
+                Id = [OrderContents].[Id],
+                IdOrder = [OrderContents].[IdOrder],
+                IdLot = [OrderContents].[IdLot],
+                Quantity = [OrderContents].[Quantity]
+        FROM
+                [OrderContents]
+        WHERE
+                [OrderContents].[Id] = @Id;
+GO
+CREATE PROCEDURE GetOrderContentsByIdOrder
+                @IdOrder int
+AS
+        SELECT
+                Id = [OrderContents].[Id],
+                IdOrder = [OrderContents].[IdOrder],
+                IdLot = [OrderContents].[IdLot],
+                Quantity = [OrderContents].[Quantity]
+        FROM
+                [OrderContents]
+        WHERE
+                [OrderContents].[IdOrder] = @IdOrder;
+GO
+CREATE PROCEDURE GetOrderContentsByIdLot
+                @IdLot int
+AS
+        SELECT
+                Id = [OrderContents].[Id],
+                IdOrder = [OrderContents].[IdOrder],
+                IdLot = [OrderContents].[IdLot],
+                Quantity = [OrderContents].[Quantity]
+        FROM
+                [OrderContents]
+        WHERE
+                [OrderContents].[IdLot] = @IdLot;
+GO
+CREATE PROCEDURE PostPartnerTypes
+                @Label varchar(255),
+                @LastInsertedID int
+AS
+        INSERT INTO [PartnerTypes] (
+                [Label]
+        )
+        VALUES (
+                @Label
+        );
         SELECT
                 Id = [PartnerTypes].[Id],
                 Label = [PartnerTypes].[Label]
         FROM
                 [PartnerTypes]
         WHERE
-                [PartnerTypes].[Id] = @InputIdPartnerTypes;
+                [PartnerTypes].[Id] = SCOPE_IDENTITY();
 GO
-CREATE PROCEDURE GetPartners
-                @InputIdPartners int
+CREATE PROCEDURE PostPartners
+                @IdPartnerType int,
+                @FirstName varchar(255),
+                @LastName varchar(255),
+                @CompanyName varchar(255),
+                @Email varchar(255),
+                @PhoneNumber int,
+                @PostalAddress varchar(255),
+                @PostalCode int,
+                @LastInsertedID int
 AS
+        INSERT INTO [Partners] (
+                [IdPartnerType],
+                [FirstName],
+                [LastName],
+                [CompanyName],
+                [Email],
+                [PhoneNumber],
+                [PostalAddress],
+                [PostalCode]
+        )
+        VALUES (
+                @IdPartnerType,
+                @FirstName,
+                @LastName,
+                @CompanyName,
+                @Email,
+                @PhoneNumber,
+                @PostalAddress,
+                @PostalCode
+        );
         SELECT
                 Id = [Partners].[Id],
                 IdPartnerType = [Partners].[IdPartnerType],
@@ -453,11 +361,24 @@ AS
         FROM
                 [Partners]
         WHERE
-                [Partners].[Id] = @InputIdPartners;
+                [Partners].[Id] = SCOPE_IDENTITY();
 GO
-CREATE PROCEDURE GetOrders
-                @InputIdOrders int
+CREATE PROCEDURE PostOrders
+                @OrderDate datetime,
+                @OrderTag varchar(255),
+                @IdPartner int,
+                @LastInsertedID int
 AS
+        INSERT INTO [Orders] (
+                [OrderDate],
+                [OrderTag],
+                [IdPartner]
+        )
+        VALUES (
+                @OrderDate,
+                @OrderTag,
+                @IdPartner
+        );
         SELECT
                 Id = [Orders].[Id],
                 OrderDate = [Orders].[OrderDate],
@@ -466,11 +387,24 @@ AS
         FROM
                 [Orders]
         WHERE
-                [Orders].[Id] = @InputIdOrders;
+                [Orders].[Id] = SCOPE_IDENTITY();
 GO
-CREATE PROCEDURE GetGammes
-                @InputIdGammes int
+CREATE PROCEDURE PostGammes
+                @Label varchar(255),
+                @Summary varchar(255),
+                @IdPartner int,
+                @LastInsertedID int
 AS
+        INSERT INTO [Gammes] (
+                [Label],
+                [Summary],
+                [IdPartner]
+        )
+        VALUES (
+                @Label,
+                @Summary,
+                @IdPartner
+        );
         SELECT
                 Id = [Gammes].[Id],
                 Label = [Gammes].[Label],
@@ -479,11 +413,30 @@ AS
         FROM
                 [Gammes]
         WHERE
-                [Gammes].[Id] = @InputIdGammes;
+                [Gammes].[Id] = SCOPE_IDENTITY();
 GO
-CREATE PROCEDURE GetLots
-                @InputIdLots int
+CREATE PROCEDURE PostLots
+                @Label varchar(255),
+                @Quantity int,
+                @IdGamme int,
+                @EntryDate datetime2,
+                @ExpirationDate datetime2,
+                @LastInsertedID int
 AS
+        INSERT INTO [Lots] (
+                [Label],
+                [Quantity],
+                [IdGamme],
+                [EntryDate],
+                [ExpirationDate]
+        )
+        VALUES (
+                @Label,
+                @Quantity,
+                @IdGamme,
+                @EntryDate,
+                @ExpirationDate
+        );
         SELECT
                 Id = [Lots].[Id],
                 Label = [Lots].[Label],
@@ -494,11 +447,24 @@ AS
         FROM
                 [Lots]
         WHERE
-                [Lots].[Id] = @InputIdLots;
+                [Lots].[Id] = SCOPE_IDENTITY();
 GO
-CREATE PROCEDURE GetOrderContents
-                @InputIdOrderContents int
+CREATE PROCEDURE PostOrderContents
+                @IdOrder int,
+                @IdLot int,
+                @Quantity int,
+                @LastInsertedID int
 AS
+        INSERT INTO [OrderContents] (
+                [IdOrder],
+                [IdLot],
+                [Quantity]
+        )
+        VALUES (
+                @IdOrder,
+                @IdLot,
+                @Quantity
+        );
         SELECT
                 Id = [OrderContents].[Id],
                 IdOrder = [OrderContents].[IdOrder],
@@ -507,90 +473,153 @@ AS
         FROM
                 [OrderContents]
         WHERE
-                [OrderContents].[Id] = @InputIdOrderContents;
+                [OrderContents].[Id] = SCOPE_IDENTITY();
 GO
-CREATE PROCEDURE GetAllPartnersByIdPartnerType
-                @InputIdPartnerTypePartners int
+CREATE PROCEDURE DeletePartnerTypes
+                @Id int
 AS
-        SELECT
-                Id = [Partners].[Id],
-                IdPartnerType = [Partners].[IdPartnerType],
-                FirstName = [Partners].[FirstName],
-                LastName = [Partners].[LastName],
-                CompanyName = [Partners].[CompanyName],
-                Email = [Partners].[Email],
-                PhoneNumber = [Partners].[PhoneNumber],
-                PostalAddress = [Partners].[PostalAddress],
-                PostalCode = [Partners].[PostalCode]
+        DELETE
+        FROM
+                [PartnerTypes]
+        WHERE
+                [PartnerTypes].[Id] = @Id;
+GO
+CREATE PROCEDURE DeletePartners
+                @Id int
+AS
+        DELETE
         FROM
                 [Partners]
         WHERE
-                [Partners].[IdPartnerType] = @InputIdPartnerTypePartners;
+                [Partners].[Id] = @Id;
 GO
-CREATE PROCEDURE GetAllOrdersByIdPartner
-                @InputIdPartnerOrders int
+CREATE PROCEDURE DeleteOrders
+                @Id int
 AS
-        SELECT
-                Id = [Orders].[Id],
-                OrderDate = [Orders].[OrderDate],
-                OrderTag = [Orders].[OrderTag],
-                IdPartner = [Orders].[IdPartner]
+        DELETE
         FROM
                 [Orders]
         WHERE
-                [Orders].[IdPartner] = @InputIdPartnerOrders;
+                [Orders].[Id] = @Id;
 GO
-CREATE PROCEDURE GetAllGammesByIdPartner
-                @InputIdPartnerGammes int
+CREATE PROCEDURE DeleteGammes
+                @Id int
 AS
-        SELECT
-                Id = [Gammes].[Id],
-                Label = [Gammes].[Label],
-                Summary = [Gammes].[Summary],
-                IdPartner = [Gammes].[IdPartner]
+        DELETE
         FROM
                 [Gammes]
         WHERE
-                [Gammes].[IdPartner] = @InputIdPartnerGammes;
+                [Gammes].[Id] = @Id;
 GO
-CREATE PROCEDURE GetAllLotsByIdGamme
-                @InputIdGammeLots int
+CREATE PROCEDURE DeleteLots
+                @Id int
 AS
-        SELECT
-                Id = [Lots].[Id],
-                Label = [Lots].[Label],
-                Quantity = [Lots].[Quantity],
-                IdGamme = [Lots].[IdGamme],
-                EntryDate = [Lots].[EntryDate],
-                ExpirationDate = [Lots].[ExpirationDate]
+        DELETE
         FROM
                 [Lots]
         WHERE
-                [Lots].[IdGamme] = @InputIdGammeLots;
+                [Lots].[Id] = @Id;
 GO
-CREATE PROCEDURE GetAllOrderContentsByIdOrder
-                @InputIdOrderOrderContents int
+CREATE PROCEDURE DeleteOrderContents
+                @Id int
 AS
-        SELECT
-                Id = [OrderContents].[Id],
-                IdOrder = [OrderContents].[IdOrder],
-                IdLot = [OrderContents].[IdLot],
-                Quantity = [OrderContents].[Quantity]
+        DELETE
         FROM
                 [OrderContents]
         WHERE
-                [OrderContents].[IdOrder] = @InputIdOrderOrderContents;
+                [OrderContents].[Id] = @Id;
 GO
-CREATE PROCEDURE GetAllOrderContentsByIdLot
-                @InputIdLotOrderContents int
+CREATE PROCEDURE PutPartnerTypes
+                @Label varchar(255),
+                @Id int
 AS
-        SELECT
-                Id = [OrderContents].[Id],
-                IdOrder = [OrderContents].[IdOrder],
-                IdLot = [OrderContents].[IdLot],
-                Quantity = [OrderContents].[Quantity]
-        FROM
-                [OrderContents]
+        UPDATE [PartnerTypes]
+        SET
+                [PartnerTypes].[Label] = @Label
         WHERE
-                [OrderContents].[IdLot] = @InputIdLotOrderContents;
+                [PartnerTypes].[Id] = @Id;
+GO
+CREATE PROCEDURE PutPartners
+                @IdPartnerType int,
+                @FirstName varchar(255),
+                @LastName varchar(255),
+                @CompanyName varchar(255),
+                @Email varchar(255),
+                @PhoneNumber int,
+                @PostalAddress varchar(255),
+                @PostalCode int,
+                @Id int
+AS
+        UPDATE [Partners]
+        SET
+                [Partners].[IdPartnerType] = @IdPartnerType,
+                [Partners].[FirstName] = @FirstName,
+                [Partners].[LastName] = @LastName,
+                [Partners].[CompanyName] = @CompanyName,
+                [Partners].[Email] = @Email,
+                [Partners].[PhoneNumber] = @PhoneNumber,
+                [Partners].[PostalAddress] = @PostalAddress,
+                [Partners].[PostalCode] = @PostalCode
+        WHERE
+                [Partners].[Id] = @Id;
+GO
+CREATE PROCEDURE PutOrders
+                @OrderDate datetime,
+                @OrderTag varchar(255),
+                @IdPartner int,
+                @Id int
+AS
+        UPDATE [Orders]
+        SET
+                [Orders].[OrderDate] = @OrderDate,
+                [Orders].[OrderTag] = @OrderTag,
+                [Orders].[IdPartner] = @IdPartner
+        WHERE
+                [Orders].[Id] = @Id;
+GO
+CREATE PROCEDURE PutGammes
+                @Label varchar(255),
+                @Summary varchar(255),
+                @IdPartner int,
+                @Id int
+AS
+        UPDATE [Gammes]
+        SET
+                [Gammes].[Label] = @Label,
+                [Gammes].[Summary] = @Summary,
+                [Gammes].[IdPartner] = @IdPartner
+        WHERE
+                [Gammes].[Id] = @Id;
+GO
+CREATE PROCEDURE PutLots
+                @Label varchar(255),
+                @Quantity int,
+                @IdGamme int,
+                @EntryDate datetime2,
+                @ExpirationDate datetime2,
+                @Id int
+AS
+        UPDATE [Lots]
+        SET
+                [Lots].[Label] = @Label,
+                [Lots].[Quantity] = @Quantity,
+                [Lots].[IdGamme] = @IdGamme,
+                [Lots].[EntryDate] = @EntryDate,
+                [Lots].[ExpirationDate] = @ExpirationDate
+        WHERE
+                [Lots].[Id] = @Id;
+GO
+CREATE PROCEDURE PutOrderContents
+                @IdOrder int,
+                @IdLot int,
+                @Quantity int,
+                @Id int
+AS
+        UPDATE [OrderContents]
+        SET
+                [OrderContents].[IdOrder] = @IdOrder,
+                [OrderContents].[IdLot] = @IdLot,
+                [OrderContents].[Quantity] = @Quantity
+        WHERE
+                [OrderContents].[Id] = @Id;
 GO
