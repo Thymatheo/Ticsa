@@ -300,8 +300,7 @@ AS
                 [OrderContents].[IdLot] = @IdLot;
 GO
 CREATE PROCEDURE PostPartnerTypes
-                @Label varchar(255),
-                @LastInsertedID int
+                @Label varchar(255)
 AS
         INSERT INTO [PartnerTypes] (
                 [Label]
@@ -325,8 +324,7 @@ CREATE PROCEDURE PostPartners
                 @Email varchar(255),
                 @PhoneNumber int,
                 @PostalAddress varchar(255),
-                @PostalCode int,
-                @LastInsertedID int
+                @PostalCode int
 AS
         INSERT INTO [Partners] (
                 [IdPartnerType],
@@ -366,8 +364,7 @@ GO
 CREATE PROCEDURE PostOrders
                 @OrderDate datetime,
                 @OrderTag varchar(255),
-                @IdPartner int,
-                @LastInsertedID int
+                @IdPartner int
 AS
         INSERT INTO [Orders] (
                 [OrderDate],
@@ -392,8 +389,7 @@ GO
 CREATE PROCEDURE PostGammes
                 @Label varchar(255),
                 @Summary varchar(255),
-                @IdPartner int,
-                @LastInsertedID int
+                @IdPartner int
 AS
         INSERT INTO [Gammes] (
                 [Label],
@@ -420,8 +416,7 @@ CREATE PROCEDURE PostLots
                 @Quantity int,
                 @IdGamme int,
                 @EntryDate datetime2,
-                @ExpirationDate datetime2,
-                @LastInsertedID int
+                @ExpirationDate datetime2
 AS
         INSERT INTO [Lots] (
                 [Label],
@@ -452,8 +447,7 @@ GO
 CREATE PROCEDURE PostOrderContents
                 @IdOrder int,
                 @IdLot int,
-                @Quantity int,
-                @LastInsertedID int
+                @Quantity int
 AS
         INSERT INTO [OrderContents] (
                 [IdOrder],
