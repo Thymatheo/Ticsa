@@ -9,11 +9,20 @@
 	         VerticalAlignment="Stretch"
 	         HorizontalContentAlignment="Stretch"
 	         VerticalContentAlignment="Stretch">
+    <UserControl.Resources>
+        <ContextMenu x:Key="DeliveryCouponContextMenu">
+            <MenuItem Header="Open file"
+                      Click="OpenFile_Click"
+                      CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+        </ContextMenu>
+    </UserControl.Resources>
     <UserControl.DataContext>
         <ViewModel:OrderUCVM x:Name="Model"/>
     </UserControl.DataContext>
     <Grid VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
@@ -22,7 +31,7 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Button Content="Reset" Click="Reset_Click" Margin="5" Width="400" MaxWidth="400" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"/>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Grid.Column="0">
+        <StackPanel Grid.RowSpan="3" Grid.Row="1" Orientation="Horizontal" Grid.Column="0">
             <ListView x:Name="OrderListView" 
                       Width="400" MaxWidth="400" 
                       Margin="5" Padding="5" 
@@ -40,8 +49,8 @@
             </ListView>
             <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="200" Width="200" Margin="5">
                 <TextBlock Text="Client :" Margin="5"/>
-                <ComboBox x:Name="ClientComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Partners, UpdateSourceTrigger=PropertyChanged}" 
-                    DisplayMemberPath="FirstName"/>
+                <ComboBox x:Name="ClientComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Clients, UpdateSourceTrigger=PropertyChanged}" 
+                    DisplayMemberPath="CompanyName"/>
                 <TextBlock Text="Date de commande :"/>
                 <DatePicker x:Name="OrderDatePicker" Margin="5"/>
                 <TextBlock Text="Tag de la Commande :"/>
@@ -49,7 +58,7 @@
                 <Button Content="Ajouter" Click="AddOrder_click" Margin="5"/>
             </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Grid.Column="1">
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
             <ListView x:Name="LotsListView" 
                       Width="400" MaxWidth="400" 
                       Margin="5" Padding="5" 
@@ -75,6 +84,49 @@
                 <TextBlock Text="Quantité :"/>
                 <TextBox x:Name="QuantityTextBox" Margin="5"/>
                 <Button Content="Ajouter" Click="AddContent_Click" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
+            <ListView x:Name="DeliveryCouponslistView" 
+                      Width="400" MaxWidth="400" 
+                      Margin="5" Padding="5" 
+                      SelectionMode="Single" 
+                      ItemsSource="{Binding DeliveryCoupons, UpdateSourceTrigger=PropertyChanged}" 
+                      VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <EventSetter Event="PreviewMouseRightButtonDown" Handler="DeliveryCouponslistView_MouseRightButtonDown" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
+                        <GridViewColumn Header="IdOrder" DisplayMemberBinding="{Binding IdOrder}"/>
+                        <GridViewColumn Header="IdPartenaire" DisplayMemberBinding="{Binding IdPartener}"/>
+                        <GridViewColumn Header="Label" DisplayMemberBinding="{Binding Label}"/>
+                        <GridViewColumn Header="RecieveDate" DisplayMemberBinding="{Binding RecieveDate}"/>
+                        <GridViewColumn Header="FilePath" DisplayMemberBinding="{Binding FilePath}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="200" Width="200" Margin="5">
+                <TextBlock Text="Order :"/>
+                <ComboBox x:Name="DC_OrdersComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Orders, UpdateSourceTrigger=PropertyChanged}" 
+                    DisplayMemberPath="OrderTag"/>
+                <TextBlock Text="Producer :"/>
+                <ComboBox x:Name="DC_ProducersComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Producers, UpdateSourceTrigger=PropertyChanged}" 
+                    DisplayMemberPath="CompanyName"/>
+                <TextBlock Text="Label :"/>
+                <TextBox x:Name="DC_LabelTextBox" Margin="5"/>
+                <TextBlock Text="Recieve Date :"/>
+                <DatePicker x:Name="DC_RecieveDatePicker" Margin="5"/>
+                <StackPanel AllowDrop="True">
+                    <TextBlock Text="Drag the Delivery Coupon below :" Margin="5" AllowDrop="True" Drop="DeliveryCoupon_Drop"/>
+                    <Border BorderThickness="1" CornerRadius="5" BorderBrush="Black" Margin="5" AllowDrop="True" Drop="DeliveryCoupon_Drop">
+                        <Button IsEnabled="False" Content="{Binding DeliveryCouponFileNameShort, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" Padding="5" AllowDrop="True" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+                    </Border>
+                </StackPanel>
+                <Button Content="Ajouter" Click="AddDC_Click" Margin="5"/>
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using Ticsa.DAL.Models;
 
@@ -34,7 +36,7 @@ namespace Ticsa.UserControls {
         }
 
         private async void AddOrder_click(object sender, System.Windows.RoutedEventArgs e) {
-            if (ClientComboBox.SelectedItem is null) MessageBox.Show("Veuillez selectionner une client");
+            if (ClientComboBox.SelectedItem is null) MessageBox.Show("Veuillez selectionner un client");
             else if (OrderDatePicker.SelectedDate is null) MessageBox.Show("Veuillez selectionner une date");
             else {
                 await Model.OrdersBS.Add(new() {
@@ -44,6 +46,41 @@ namespace Ticsa.UserControls {
                 });
                 await Model.LoadOrders();
             }
+        }
+
+        private async void AddDC_Click(object sender, RoutedEventArgs e) {
+            if (DC_ProducersComboBox.SelectedItem is null) MessageBox.Show("Veuillez selectionner un producteur");
+            else if (DC_OrdersComboBox.SelectedItem is null) MessageBox.Show("Veuillez selectionner une commande");
+            else if (DC_RecieveDatePicker.SelectedDate is null) MessageBox.Show("Veuillez selectionner une date");
+            else {
+                await Model.DeliveryCouponsBS.Add(new() {
+                    IdOrder = (DC_OrdersComboBox.SelectedItem as Orders)!.Id,
+                    IdPartner = (DC_ProducersComboBox.SelectedItem as Partners)!.Id,
+                    RecieveDate = DC_RecieveDatePicker.SelectedDate.Value,
+                    Label = DC_LabelTextBox.Text,
+                    FilePath = FileManager.Copy(Model.DeliveryCouponFileName!, FileManager.DELIVERYCOUPON_DIRECTORY)
+                });
+                await Model.LoadDeliveryCoupons();
+            }
+        }
+
+        private void DeliveryCoupon_Drop(object sender, DragEventArgs e) {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files.Length > 1) MessageBox.Show("Veuillez ne selectionner qu'un seul fichier");
+                else {
+                    Model.DeliveryCouponFileName = files[0];
+                }
+            }
+        }
+
+        private void DeliveryCouponslistView_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            DeliveryCouponslistView.ContextMenu = (ContextMenu)Resources["DeliveryCouponContextMenu"];
+        }
+
+
+        private void OpenFile_Click(object sender, RoutedEventArgs e) {
+            FileManager.Open(FileManager.DELIVERYCOUPON_DIRECTORY, (DeliveryCouponslistView.SelectedItem as DeliveryCoupons).FilePath);
         }
     }
 }

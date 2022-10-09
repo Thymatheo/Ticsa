@@ -35,7 +35,7 @@
             <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="200" Width="200" Margin="5">
                 <TextBlock Text="Partener :" Margin="5"/>
                 <ComboBox x:Name="PartnerComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Partners, UpdateSourceTrigger=PropertyChanged}" 
-                    DisplayMemberPath="FirstName"/>
+                    DisplayMemberPath="CompanyName"/>
                 <TextBlock Text="Label :"/>
                 <TextBox x:Name="GammeLabelTextBox" Margin="5"/>
                 <TextBlock Text="Description :" Margin="5"/>

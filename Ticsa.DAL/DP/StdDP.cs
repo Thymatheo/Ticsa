@@ -4,6 +4,7 @@ using Ticsa.DAL.Models;
 
 namespace Ticsa.DAL.DP {
     public abstract class StdDP<T> where T : StdEntity, new() {
+        protected string _entityLabel = typeof(T).Name;
         protected string _SpGetAllLabel;
         protected string _SpGetByIdLabel;
         protected string _SpAddLabel;
@@ -18,6 +19,13 @@ namespace Ticsa.DAL.DP {
             _SpDeleteLabel = $"Delete{labelDP}";
             _SpGetAllLabel = $"Get{labelDP}s";
             _SpGetByIdLabel = $"Get{labelDP}";
+        }
+        public StdDP() {
+            _SpAddLabel = $"Post{_entityLabel}";
+            _SpUpdateLabel = $"Put{_entityLabel}";
+            _SpDeleteLabel = $"Delete{_entityLabel}";
+            _SpGetAllLabel = $"Get{_entityLabel}s";
+            _SpGetByIdLabel = $"Get{_entityLabel}";
         }
 
         public async Task<IEnumerable<T>> GetAll() =>

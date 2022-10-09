@@ -65,7 +65,20 @@ CREATE TABLE OrderContents(
 	CONSTRAINT FK_Lots_Id_OrderContents_IdLot FOREIGN KEY (IdLot) REFERENCES Lots(Id),
 	CONSTRAINT PK_OrderContents_Id PRIMARY KEY CLUSTERED (Id)
 );
+
+CREATE TABLE DeliveryCoupons(
+        Id INT IDENTITY(1,1) NOT NULL,
+        IdOrder INT NOT NULL,
+        IdPartner INT NOT NULL,
+        Label VARCHAR(255) NOT NULL,
+        RecieveDate DATETIME2 NOT NULL,
+        FilePath VARCHAR(255) NULL,
+        CONSTRAINT FK_Orders_Id_DeliveryCoupons_IdOrder FOREIGN KEY (IdOrder) REFERENCES Orders(Id),
+        CONSTRAINT FK_Partners_Id_DeliveryCoupons_IdPartener FOREIGN KEY (IdPartner) REFERENCES Partners(Id),
+        CONSTRAINT PK_DeliveryCoupons_Id PRIMARY KEY CLUSTERED (Id)
+);
 GO
+
 CREATE PROCEDURE GetPartnerTypess
 AS
         SELECT
@@ -299,6 +312,63 @@ AS
         WHERE
                 [OrderContents].[IdLot] = @IdLot;
 GO
+CREATE PROCEDURE GetDeliveryCouponss
+AS
+        SELECT
+                Id = [DeliveryCoupons].[Id],
+                IdOrder = [DeliveryCoupons].[IdOrder],
+                IdPartner = [DeliveryCoupons].[IdPartner],
+                Label = [DeliveryCoupons].[Label],
+                RecieveDate = [DeliveryCoupons].[RecieveDate],
+                FilePath = [DeliveryCoupons].[FilePath]
+        FROM
+                [DeliveryCoupons];
+GO
+CREATE PROCEDURE GetDeliveryCoupons
+                @Id int
+AS
+        SELECT
+                Id = [DeliveryCoupons].[Id],
+                IdOrder = [DeliveryCoupons].[IdOrder],
+                IdPartner = [DeliveryCoupons].[IdPartner],
+                Label = [DeliveryCoupons].[Label],
+                RecieveDate = [DeliveryCoupons].[RecieveDate],
+                FilePath = [DeliveryCoupons].[FilePath]
+        FROM
+                [DeliveryCoupons]
+        WHERE
+                [DeliveryCoupons].[Id] = @Id;
+GO
+CREATE PROCEDURE GetDeliveryCouponsByIdOrder
+                @IdOrder int
+AS
+        SELECT
+                Id = [DeliveryCoupons].[Id],
+                IdOrder = [DeliveryCoupons].[IdOrder],
+                IdPartner = [DeliveryCoupons].[IdPartner],
+                Label = [DeliveryCoupons].[Label],
+                RecieveDate = [DeliveryCoupons].[RecieveDate],
+                FilePath = [DeliveryCoupons].[FilePath]
+        FROM
+                [DeliveryCoupons]
+        WHERE
+                [DeliveryCoupons].[IdOrder] = @IdOrder;
+GO
+CREATE PROCEDURE GetDeliveryCouponsByIdPartner
+                @IdPartner int
+AS
+        SELECT
+                Id = [DeliveryCoupons].[Id],
+                IdOrder = [DeliveryCoupons].[IdOrder],
+                IdPartner = [DeliveryCoupons].[IdPartner],
+                Label = [DeliveryCoupons].[Label],
+                RecieveDate = [DeliveryCoupons].[RecieveDate],
+                FilePath = [DeliveryCoupons].[FilePath]
+        FROM
+                [DeliveryCoupons]
+        WHERE
+                [DeliveryCoupons].[IdPartner] = @IdPartner;
+GO
 CREATE PROCEDURE PostPartnerTypes
                 @Label varchar(255)
 AS
@@ -469,6 +539,39 @@ AS
         WHERE
                 [OrderContents].[Id] = SCOPE_IDENTITY();
 GO
+CREATE PROCEDURE PostDeliveryCoupons
+                @IdOrder int,
+                @IdPartner int,
+                @Label varchar(255),
+                @RecieveDate datetime2,
+                @FilePath varchar(255)
+AS
+        INSERT INTO [DeliveryCoupons] (
+                [IdOrder],
+                [IdPartner],
+                [Label],
+                [RecieveDate],
+                [FilePath]
+        )
+        VALUES (
+                @IdOrder,
+                @IdPartner,
+                @Label,
+                @RecieveDate,
+                @FilePath
+        );
+        SELECT
+                Id = [DeliveryCoupons].[Id],
+                IdOrder = [DeliveryCoupons].[IdOrder],
+                IdPartner = [DeliveryCoupons].[IdPartner],
+                Label = [DeliveryCoupons].[Label],
+                RecieveDate = [DeliveryCoupons].[RecieveDate],
+                FilePath = [DeliveryCoupons].[FilePath]
+        FROM
+                [DeliveryCoupons]
+        WHERE
+                [DeliveryCoupons].[Id] = SCOPE_IDENTITY();
+GO
 CREATE PROCEDURE DeletePartnerTypes
                 @Id int
 AS
@@ -522,6 +625,15 @@ AS
                 [OrderContents]
         WHERE
                 [OrderContents].[Id] = @Id;
+GO
+CREATE PROCEDURE DeleteDeliveryCoupons
+                @Id int
+AS
+        DELETE
+        FROM
+                [DeliveryCoupons]
+        WHERE
+                [DeliveryCoupons].[Id] = @Id;
 GO
 CREATE PROCEDURE PutPartnerTypes
                 @Label varchar(255),
@@ -616,4 +728,22 @@ AS
                 [OrderContents].[Quantity] = @Quantity
         WHERE
                 [OrderContents].[Id] = @Id;
+GO
+CREATE PROCEDURE PutDeliveryCoupons
+                @IdOrder int,
+                @IdPartner int,
+                @Label varchar(255),
+                @RecieveDate datetime2,
+                @FilePath varchar(255),
+                @Id int
+AS
+        UPDATE [DeliveryCoupons]
+        SET
+                [DeliveryCoupons].[IdOrder] = @IdOrder,
+                [DeliveryCoupons].[IdPartner] = @IdPartner,
+                [DeliveryCoupons].[Label] = @Label,
+                [DeliveryCoupons].[RecieveDate] = @RecieveDate,
+                [DeliveryCoupons].[FilePath] = @FilePath
+        WHERE
+                [DeliveryCoupons].[Id] = @Id;
 GO

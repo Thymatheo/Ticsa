@@ -3,7 +3,7 @@ using Ticsa.DAL.Models;
 
 namespace Ticsa.DAL.DP {
     public class OrderContentsDP : StdDP<OrderContents> {
-        public OrderContentsDP() : base("OrderContents") {
+        public OrderContentsDP() {
         }
 
 

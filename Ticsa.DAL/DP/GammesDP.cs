@@ -2,7 +2,7 @@
 
 namespace Ticsa.DAL.DP {
     public class GammesDP : StdDP<Gammes> {
-        public GammesDP() : base("Gammes") {
+        public GammesDP() {
         }
 
         protected override object BuildAddParam(Gammes entity) => new {

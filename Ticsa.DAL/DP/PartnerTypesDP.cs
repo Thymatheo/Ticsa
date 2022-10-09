@@ -2,7 +2,7 @@
 
 namespace Ticsa.DAL.DP {
     public class PartnerTypesDP : StdDP<PartnerTypes> {
-        public PartnerTypesDP() : base("PartnerTypes") {
+        public PartnerTypesDP() {
         }
 
         protected override object BuildAddParam(PartnerTypes entity) => new {
