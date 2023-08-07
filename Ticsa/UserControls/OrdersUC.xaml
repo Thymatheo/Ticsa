@@ -40,8 +40,7 @@
                       SelectionChanged="OrderListView_SelectionChanged">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
-                        <GridViewColumn Header="IdPartner" DisplayMemberBinding="{Binding IdPartner}"/>
+                        <GridViewColumn Header="Partner" DisplayMemberBinding="{Binding Partner.CompanyName}"/>
                         <GridViewColumn Header="Order Date" DisplayMemberBinding="{Binding OrderDate}"/>
                         <GridViewColumn Header="Order Tag" DisplayMemberBinding="{Binding OrderTag}"/>
                     </GridView>
@@ -67,9 +66,8 @@
                       VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
-                        <GridViewColumn Header="IdLot" DisplayMemberBinding="{Binding IdLot}"/>
-                        <GridViewColumn Header="IdOrder" DisplayMemberBinding="{Binding IdOrder}"/>
+                        <GridViewColumn Header="Lot" DisplayMemberBinding="{Binding Lot.Label}"/>
+                        <GridViewColumn Header="OrderTag" DisplayMemberBinding="{Binding Order.OrderTag}"/>
                         <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}"/>
                     </GridView>
                 </ListView.View>
@@ -100,9 +98,8 @@
                 </ListView.ItemContainerStyle>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
-                        <GridViewColumn Header="IdOrder" DisplayMemberBinding="{Binding IdOrder}"/>
-                        <GridViewColumn Header="IdPartenaire" DisplayMemberBinding="{Binding IdPartener}"/>
+                        <GridViewColumn Header="OrderTag" DisplayMemberBinding="{Binding Order.OrderTag}"/>
+                        <GridViewColumn Header="Partner" DisplayMemberBinding="{Binding Partner.CompanyName}"/>
                         <GridViewColumn Header="Label" DisplayMemberBinding="{Binding Label}"/>
                         <GridViewColumn Header="RecieveDate" DisplayMemberBinding="{Binding RecieveDate}"/>
                         <GridViewColumn Header="FilePath" DisplayMemberBinding="{Binding FilePath}"/>

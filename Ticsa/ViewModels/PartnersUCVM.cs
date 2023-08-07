@@ -1,32 +1,33 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Ticsa.BLL.BS;
+using Ticsa.BLL.DTOs;
 using Ticsa.DAL.Models;
 
 namespace Ticsa.ViewModels {
     public class PartnersUCVM {
         public PartnersBS PartnersBS { get; set; }
         public PartnerTypesBS PartnerTypesBS { get; set; }
-        public ObservableCollection<Partners?>? Partners { get; set; }
-        public ObservableCollection<PartnerTypes?>? PartnerTypes { get; set; }
+        public ObservableCollection<PartnersDTO?>? Partners { get; set; }
+        public ObservableCollection<PartnerTypesDTO?>? PartnerTypes { get; set; }
 
         public PartnersUCVM() {
             PartnersBS = new();
             PartnerTypesBS = new();
-            Task.Run(async () => await LoadData()).Wait();
+            Task.Run(LoadData).Wait();
         }
 
-        public async Task LoadData() {
-            await LoadPartner();
+        public void LoadData() {
+            LoadPartner();
             if (PartnerTypes is null) {
-                PartnerTypes = new(await PartnerTypesBS.GetAll());
+                PartnerTypes = new(PartnerTypesBS.Gets());
             }
         }
-        public async Task LoadPartner() {
+        public void LoadPartner() {
             if (Partners is not null)
-                await Partners.Refresh(() => PartnersBS.GetAll());
+                Partners.Refresh<Partners, PartnersDTO>(PartnersBS.Gets);
             else
-                Partners = new(await PartnersBS.GetAll());
+                Partners = new(PartnersBS.Gets());
         }
     }
 }

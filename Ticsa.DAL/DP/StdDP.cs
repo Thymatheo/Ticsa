@@ -1,44 +1,29 @@
-﻿using Dapper;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 using Ticsa.DAL.Models;
 
 namespace Ticsa.DAL.DP {
     public abstract class StdDP<T> where T : StdEntity, new() {
-        protected string _entityLabel = typeof(T).Name;
-        protected string _SpGetAllLabel;
-        protected string _SpGetByIdLabel;
-        protected string _SpAddLabel;
-        protected string _SpUpdateLabel;
-        protected string _SpDeleteLabel;
+        protected Entities<T> Entities;
         public SqlConnection GetConnection() =>
             new(DatabaseConfig.DBConnectionString);
-
-        public StdDP(string labelDP) {
-            _SpAddLabel = $"Post{labelDP}";
-            _SpUpdateLabel = $"Put{labelDP}";
-            _SpDeleteLabel = $"Delete{labelDP}";
-            _SpGetAllLabel = $"Get{labelDP}s";
-            _SpGetByIdLabel = $"Get{labelDP}";
-        }
         public StdDP() {
-            _SpAddLabel = $"Post{_entityLabel}";
-            _SpUpdateLabel = $"Put{_entityLabel}";
-            _SpDeleteLabel = $"Delete{_entityLabel}";
-            _SpGetAllLabel = $"Get{_entityLabel}s";
-            _SpGetByIdLabel = $"Get{_entityLabel}";
+            this.Entities = new();
         }
 
-        public async Task<IEnumerable<T>> GetAll() =>
-            await GetConnection().QueryAsync<T>($"{_SpGetAllLabel}", commandType: System.Data.CommandType.StoredProcedure);
-        public async Task<T> GetById(int id) =>
-            (await GetConnection().QueryAsync<T>($"{_SpGetByIdLabel}", new { Id = id }, commandType: System.Data.CommandType.StoredProcedure)).FirstOrDefault();
-        public async Task<T> Add(T entity) =>
-            (await GetConnection().QueryAsync<T>($"{_SpAddLabel}", BuildAddParam(entity), commandType: System.Data.CommandType.StoredProcedure)).FirstOrDefault() ?? throw new Exception($"Fail to add entity typeof({typeof(T).Name})");
-        public async Task<T> Update(T entity) =>
-            (await GetConnection().ExecuteAsync($"{_SpUpdateLabel}", entity, commandType: System.Data.CommandType.StoredProcedure)) != 0 ? entity : throw new Exception($"Fail to update entity typeof({typeof(T).Name})");
-        public async Task<bool> Delete(int id) =>
-            (await GetConnection().ExecuteAsync($"{_SpDeleteLabel}", new { Id = id }, commandType: System.Data.CommandType.StoredProcedure)) != 0 ? true : throw new Exception($"Fail to delete entity typeof({typeof(T).Name})");
+        public IEnumerable<T> Gets() => Entities;
+        public T? Get(Guid id) => Entities.FirstOrDefault(x => x.Id == id, null);
+        public T Add(T entity) {
+            entity.Id = Guid.NewGuid();
+            return Entities.Add(entity);
+        }
+        public T Update(T entity) =>
+            Entities.Update(entity);
 
-        protected abstract object BuildAddParam(T entity);
+        public bool Delete(Guid id) =>
+            Entities.Delete(id);
+
+        public IEnumerable<T> GetsBy(Func<T, bool> predicate) => Entities.Where(predicate);
+        public T? GetBy(Func<T?, bool> predicate) => Entities.FirstOrDefault(predicate);
+
     }
 }

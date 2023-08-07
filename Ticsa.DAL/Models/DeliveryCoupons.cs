@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ticsa.DAL.Models {
-    public class DeliveryCoupons : StdEntity {
-        public int IdOrder { get; set; }
-        public int IdPartner { get; set; }
+﻿namespace Ticsa.DAL.Models {
+    public class DeliveryCoupons : StdEntity, IDeliveryCoupon {
+        public Guid IdOrder { get; set; }
+        public Guid IdPartner { get; set; }
         public string Label { get; set; }
         public DateTime RecieveDate { get; set; }
         public string? FilePath { get; set; }
+    }
+    public interface IDeliveryCoupon : IStdEntity {
+        public Guid IdOrder { get; }
+        public Guid IdPartner { get; }
+        public string Label { get; }
+        public DateTime RecieveDate { get; }
+        public string? FilePath { get; }
     }
 }

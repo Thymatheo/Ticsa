@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Ticsa.BLL.DTOs;
 using Ticsa.DAL.Models;
 
 namespace Ticsa.UserControls {
@@ -11,7 +12,7 @@ namespace Ticsa.UserControls {
             InitializeComponent();
         }
 
-        private async void AddParteners_Click(object sender, RoutedEventArgs e) {
+        private void AddParteners_Click(object sender, RoutedEventArgs e) {
             if (PartnerTypesComboBox.SelectedItem is null)
                 MessageBox.Show("Veuillez selectionner un type de partenaire avant d'ajouter");
             else if (!int.TryParse(PhoneNumberTextBox.Text, out int phoneNumber))
@@ -19,8 +20,8 @@ namespace Ticsa.UserControls {
             else if (!int.TryParse(PostalCodeTextBox.Text, out int postalCode))
                 MessageBox.Show("Veuillez verifier la syntax du code postal");
             else {
-                _ = await Model.PartnersBS.Add(new() {
-                    IdPartnerType = (PartnerTypesComboBox.SelectedItem as PartnerTypes)!.Id,
+                _ = Model.PartnersBS.Add(new() {
+                    IdPartnerType = (PartnerTypesComboBox.SelectedItem as PartnerTypesDTO)!.Id,
                     FirstName = FirstNameTextBox.Text,
                     LastName = LastNameTextBox.Text,
                     CompanyName = CompanyNameTextBox.Text,
@@ -29,7 +30,7 @@ namespace Ticsa.UserControls {
                     PostalAddress = PostalAddressTextBox.Text,
                     PostalCode = postalCode,
                 });
-                await Model.LoadData();
+                Model.LoadData();
             }
         }
     }

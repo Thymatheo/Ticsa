@@ -14,24 +14,21 @@ namespace Ticsa {
         public MainWindow() {
             DatabaseConfig.DBConnectionString = "Server = (localdb)\\MSSQLLocalDB; Database = Ticsa; Integrated Security = True";
             InitializeComponent();
-            GammesUC = new();
-            PartenersUC = new();
-            OrdersUC = new();
         }
 
-        private async void GammesMenuItem_Click(object sender, RoutedEventArgs e) {
-            MainContentControl.Content = GammesUC;
-            await GammesUC.Model.LoadData();
+        private void GammesMenuItem_Click(object sender, RoutedEventArgs e) {
+            MainContentControl.Content = GammesUC = new();
+            GammesUC.Model.LoadData();
         }
 
-        private async void OrdersMenuItem_Click(object sender, RoutedEventArgs e) {
-            MainContentControl.Content = OrdersUC;
-            await OrdersUC.Model.LoadData();
+        private void OrdersMenuItem_Click(object sender, RoutedEventArgs e) {
+            MainContentControl.Content = OrdersUC = new();
+            OrdersUC.Model.LoadData();
         }
 
-        private async void PartnersMenuItem_Click(object sender, RoutedEventArgs e) {
-            MainContentControl.Content = PartenersUC;
-            await PartenersUC.Model.LoadData();
+        private void PartnersMenuItem_Click(object sender, RoutedEventArgs e) {
+            MainContentControl.Content = PartenersUC = new();
+            PartenersUC.Model.LoadData();
         }
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Ticsa.BLL.BS;
+using Ticsa.BLL.DTOs;
+using Ticsa.DAL.DP;
 using Ticsa.DAL.Models;
 
 namespace Ticsa.ViewModels {
@@ -11,40 +13,42 @@ namespace Ticsa.ViewModels {
         public GammesBS GammesBS { get; set; }
         public LotsBS LotsBS { get; set; }
         public PartnersBS PartnersBS { get; set; }
-        public ObservableCollection<Gammes?>? Gammes { get; set; }
-        public ObservableCollection<Lots?>? Lots { get; set; }
-        public ObservableCollection<Partners?>? Partners { get; set; }
+        public PartnerTypesDP PartnerTypesDP { get; set; }
+        public ObservableCollection<GammesDTO?>? Gammes { get; set; }
+        public ObservableCollection<LotsDTO?>? Lots { get; set; }
+        public ObservableCollection<PartnersDTO?>? Partners { get; set; }
         public GammesUCVM() {
             GammesBS = new();
             LotsBS = new();
             PartnersBS = new();
-            Task.Run(async () => await LoadData()).Wait();
+            PartnerTypesDP = new();
+            Task.Run(LoadData).Wait();
         }
-        public async Task LoadData() {
-            await LoadGammes();
-            await LoadLots();
-            await LoadPartner();
+        public void LoadData() {
+            LoadGammes();
+            LoadLots();
+            LoadPartner();
         }
-        public async Task LoadPartner() {
-            Task<IEnumerable<Partners?>> partners = PartnersBS.GetByIdType(PARTNER_TYPE_ID);
+        public void LoadPartner() {
+            IEnumerable<PartnersDTO?> partners = PartnersBS.GetByIdType(PartnerTypesDP.GetProducer().Id);
             if (Partners is not null)
-                await Partners.Refresh(() => partners);
+                Partners.Refresh<Partners, PartnersDTO>(() => partners);
             else
-                Partners = new(await partners);
+                Partners = new(partners);
         }
 
-        public async Task LoadGammes() {
+        public void LoadGammes() {
             if (Gammes is not null)
-                await Gammes.Refresh(() => GammesBS.GetAll());
+                Gammes.Refresh<Gammes, GammesDTO>(GammesBS.Gets);
             else
-                Gammes = new(await GammesBS.GetAll());
+                Gammes = new(GammesBS.Gets());
         }
 
-        public async Task LoadLots(Func<Task<IEnumerable<Lots?>>>? func = null) {
+        public void LoadLots(Func<IEnumerable<LotsDTO?>>? func = null) {
             if (Lots is not null)
-                await Lots.Refresh(func ?? (() => LotsBS.GetAll()));
+                Lots.Refresh<Lots, LotsDTO>(func ?? (LotsBS.Gets));
             else
-                Lots = new(await LotsBS.GetAll());
+                Lots = new(LotsBS.Gets());
         }
     }
 }

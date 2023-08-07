@@ -5,12 +5,14 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Ticsa.BLL.BS;
+using Ticsa.BLL.DTOs;
+using Ticsa.DAL.DP;
 using Ticsa.DAL.Models;
 
 namespace Ticsa.ViewModels {
     internal class OrderUCVM : INotifyPropertyChanged {
-        private const int CLIENT_TYPE_ID = 1;
-        private const int PRODUCER_TYPE_ID = 2;
+        private const string CLIENT_TYPE = PartnerTypesDP.CLIENT_TYPE;
+        private const string PRODUCER_TYPE = PartnerTypesDP.PRODUCER_TYPE;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public GammesBS GammesBS { get; set; }
@@ -19,13 +21,14 @@ namespace Ticsa.ViewModels {
         public OrdersBS OrdersBS { get; set; }
         public OrderContentsBS OrderContentsBS { get; set; }
         public DeliveryCouponsBS DeliveryCouponsBS { get; set; }
-        public ObservableCollection<Gammes?>? Gammes { get; set; }
-        public ObservableCollection<Lots?>? Lots { get; set; }
-        public ObservableCollection<Partners?>? Clients { get; set; }
-        public ObservableCollection<Partners?>? Producers { get; set; }
-        public ObservableCollection<Orders?>? Orders { get; set; }
-        public ObservableCollection<OrderContents?>? OrderContents { get; set; }
-        public ObservableCollection<DeliveryCoupons?>? DeliveryCoupons { get; set; }
+        public PartnerTypesDP PartnerTypesDP { get; set; }
+        public ObservableCollection<GammesDTO?>? Gammes { get; set; }
+        public ObservableCollection<LotsDTO?>? Lots { get; set; }
+        public ObservableCollection<PartnersDTO?>? Clients { get; set; }
+        public ObservableCollection<PartnersDTO?>? Producers { get; set; }
+        public ObservableCollection<OrdersDTO?>? Orders { get; set; }
+        public ObservableCollection<OrderContentsDTO?>? OrderContents { get; set; }
+        public ObservableCollection<DeliveryCouponsDTO?>? DeliveryCoupons { get; set; }
         private string? _deliveryCouponFileName;
         public string? DeliveryCouponFileName {
             get => _deliveryCouponFileName;
@@ -54,64 +57,65 @@ namespace Ticsa.ViewModels {
             OrdersBS = new();
             OrderContentsBS = new();
             DeliveryCouponsBS = new();
+            PartnerTypesDP = new();
             _deliveryCouponFileName = null;
-            Task.Run(async () => await LoadData()).Wait();
+            Task.Run(LoadData).Wait();
         }
 
-        public async Task LoadData() {
-            await LoadGammes();
-            await LoadLots();
-            await LoadOrders();
-            await LoadOrderContents();
-            await LoadDeliveryCoupons();
-            await LoadParteners();
+        public void LoadData() {
+            LoadGammes();
+            LoadLots();
+            LoadOrders();
+            LoadOrderContents();
+            LoadDeliveryCoupons();
+            LoadParteners();
         }
 
-        private async Task LoadParteners() {
+        private void LoadParteners() {
             if (Clients is not null)
-                await Clients.Refresh(() => PartnersBS.GetByIdType(CLIENT_TYPE_ID));
+                Clients.Refresh<Partners, PartnersDTO>(() => PartnersBS.GetByIdType(PartnerTypesDP.GetClient().Id));
             else
-                Clients = new(await PartnersBS.GetByIdType(CLIENT_TYPE_ID));
+                Clients = new(PartnersBS.GetByIdType(PartnerTypesDP.GetClient().Id));
 
             if (Producers is not null)
-                await Producers.Refresh(() => PartnersBS.GetByIdType(PRODUCER_TYPE_ID));
+                Producers.Refresh<Partners, PartnersDTO>(() => PartnersBS.GetByIdType(PartnerTypesDP.GetProducer().Id));
             else
-                Producers = new(await PartnersBS.GetByIdType(PRODUCER_TYPE_ID));
+                Producers = new(PartnersBS.GetByIdType(PartnerTypesDP.GetProducer().Id));
         }
 
-        public async Task LoadDeliveryCoupons() {
+        public void LoadDeliveryCoupons() {
             if (DeliveryCoupons is not null)
-                await DeliveryCoupons.Refresh(() => DeliveryCouponsBS.GetAll());
+                DeliveryCoupons.Refresh<DeliveryCoupons, DeliveryCouponsDTO>(DeliveryCouponsBS.Gets);
             else
-                DeliveryCoupons = new(await DeliveryCouponsBS.GetAll());
+                DeliveryCoupons = new(DeliveryCouponsBS.Gets());
         }
 
-        public async Task LoadGammes() {
+        public void LoadGammes() {
             if (Gammes is not null)
-                await Gammes.Refresh(() => GammesBS.GetAll());
+                Gammes.Refresh<Gammes, GammesDTO>(GammesBS.Gets);
             else
-                Gammes = new(await GammesBS.GetAll());
+                Gammes = new(GammesBS.Gets());
         }
 
-        public async Task LoadLots(Func<Task<IEnumerable<Lots?>>>? func = null) {
+        public void LoadLots(Func<IEnumerable<LotsDTO?>>? func = null) {
             if (Lots is not null)
-                await Lots.Refresh(func ?? (() => LotsBS.GetAll()));
+                Lots.Refresh<Lots, LotsDTO>(func ?? (LotsBS.Gets));
             else
-                Lots = new(await LotsBS.GetAll());
+                Lots = new(LotsBS.Gets());
         }
 
-        public async Task LoadOrders() {
+        public void LoadOrders() {
             if (Orders is not null)
-                await Orders.Refresh(() => OrdersBS.GetAll());
+                Orders.Refresh<Orders, OrdersDTO>(OrdersBS.Gets);
             else
-                Orders = new(await OrdersBS.GetAll());
+                Orders = new(OrdersBS.Gets());
         }
 
-        public async Task LoadOrderContents(Func<Task<IEnumerable<OrderContents?>>>? func = null) {
+        public void LoadOrderContents(Func<IEnumerable<OrderContentsDTO?>>? func = null) {
             if (OrderContents is not null)
-                await OrderContents.Refresh(func ?? (() => OrderContentsBS.GetAll()));
+                OrderContents.Refresh<OrderContents, OrderContentsDTO>(func ?? (OrderContentsBS.Gets));
             else
-                OrderContents = new(await OrderContentsBS.GetAll());
+                OrderContents = new(OrderContentsBS.Gets());
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "") {

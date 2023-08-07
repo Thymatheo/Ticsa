@@ -21,7 +21,7 @@
             <ListView Margin="5" Padding="5" SelectionMode="Single" ItemsSource="{Binding Partners, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True" Width="800" MaxWidth="800" ScrollViewer.HorizontalScrollBarVisibility="Visible">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="IdPartnerType" DisplayMemberBinding="{Binding IdPartnerType}"/>
+                        <GridViewColumn Header="PartnerType" DisplayMemberBinding="{Binding PartnerType.Label}"/>
                         <GridViewColumn Header="FirstName" DisplayMemberBinding="{Binding FirstName}"/>
                         <GridViewColumn Header="LastName" DisplayMemberBinding="{Binding LastName}"/>
                         <GridViewColumn Header="CompanyName" DisplayMemberBinding="{Binding CompanyName}"/>
