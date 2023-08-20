@@ -12,7 +12,6 @@ namespace Ticsa {
         private OrdersUC OrdersUC { get; set; }
         private PartenersUC PartenersUC { get; set; }
         public MainWindow() {
-            DatabaseConfig.DBConnectionString = "Server = (localdb)\\MSSQLLocalDB; Database = Ticsa; Integrated Security = True";
             InitializeComponent();
             GammesUC = new(); 
             OrdersUC = new();
@@ -21,7 +20,7 @@ namespace Ticsa {
 
         private void GammesMenuItem_Click(object sender, RoutedEventArgs e) {
             MainContentControl.Content = GammesUC;
-            GammesUC.Model.LoadData();
+            //GammesUC.Model.LoadData();
         }
 
         private void OrdersMenuItem_Click(object sender, RoutedEventArgs e) {

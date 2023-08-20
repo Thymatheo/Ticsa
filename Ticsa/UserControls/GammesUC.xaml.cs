@@ -1,7 +1,11 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using Ticsa.BLL.DTOs;
 using Ticsa.DAL.Models;
+using Ticsa.Filters;
+using Ticsa.Filters.UserControls;
+using Ticsa.Filters.ViewModels;
 
 namespace Ticsa.UserControls {
     /// <summary>
@@ -12,6 +16,18 @@ namespace Ticsa.UserControls {
         public GammesUC() {
             InitializeComponent();
             _menu = (ContextMenu)Resources["ManagerConnectionContextMenu"];
+            FilterPopupContent.Content = new FilterUC(
+                () => {
+                    Model.LoadGammes();
+                },
+                (predicate) => {
+                    var t = Model.Gammes!.Where(x => {
+                        return predicate(x!);
+                    }).ToList();
+                    Model.Gammes.ApplyFilter(t);
+                },
+                new StringFilter("Partner", (obj) => ((GammesDTO)obj).Partner!.CompanyName),
+                new StringFilter("Label", (obj) => ((GammesDTO)obj).Label));
             Model.LoadData();
         }
 

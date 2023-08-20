@@ -12,5 +12,10 @@ namespace Ticsa {
             foreach (U? lot in func.Invoke())
                 col.Add(lot);
         }
+        public static void ApplyFilter<T>(this ObservableCollection<T?> col, IEnumerable<T?> lots){
+            col.Clear();
+            foreach (T? lot in lots)
+                col.Add(lot);
+        }
     }
 }

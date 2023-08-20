@@ -4,8 +4,6 @@ using Ticsa.DAL.Models;
 namespace Ticsa.DAL.DP {
     public abstract class StdDP<T> where T : StdEntity, new() {
         protected Entities<T> Entities;
-        public SqlConnection GetConnection() =>
-            new(DatabaseConfig.DBConnectionString);
         public StdDP() {
             this.Entities = new();
         }

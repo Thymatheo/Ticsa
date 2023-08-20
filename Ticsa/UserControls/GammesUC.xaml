@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ViewModel="clr-namespace:Ticsa.ViewModels"
+             xmlns:Filters="clr-namespace:Ticsa.Filters.UserControls"
              mc:Ignorable="d"
 	         VerticalAlignment="Stretch"
 	         VerticalContentAlignment="Stretch"
@@ -46,10 +47,27 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <Button Content="Reset" Click="Reset_Click" Margin="5" Width="400" MaxWidth="400" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"/>
+        <Grid Grid.Column="0" Grid.Row="0" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ToggleButton x:Name="TogglePopupButton" HorizontalAlignment="Stretch" Grid.Column="0" Margin="5" Padding="5">
+                <StackPanel>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"> 
+                        <Run Text="Filter" />
+                    </TextBlock>
+                    <Popup x:Name="FilterPopup" IsOpen="{Binding IsChecked, ElementName=TogglePopupButton}">
+                        <Border BorderThickness="1">
+                            <ContentControl x:Name="FilterPopupContent"/>
+                        </Border>
+                    </Popup>
+                </StackPanel>
+            </ToggleButton>
+        </Grid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Grid.Column="0">
             <ListView 
-                x:Name="GammesListView" 
+                x:Name="GammesListView"
                 Width="400" MaxWidth="400" Margin="5" Padding="5" 
                 SelectionMode="Single" ItemsSource="{Binding Gammes, UpdateSourceTrigger=PropertyChanged}" 
                 VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True" 
