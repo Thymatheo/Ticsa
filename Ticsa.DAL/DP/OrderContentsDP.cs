@@ -2,8 +2,8 @@
 
 namespace Ticsa.DAL.DP {
     public class OrderContentsDP : StdDP<OrderContents> {
-        public OrderContentsDP() {
-        }
+        private static readonly Lazy<OrderContentsDP> _instance = new(() => new());
+        public static OrderContentsDP Instance => _instance.Value;
         public IEnumerable<OrderContents> GetByIdOrder(Guid idOrder) => GetsBy(x => x.IdOrder == idOrder);
 
     }

@@ -10,6 +10,7 @@ namespace Ticsa.UserControls {
     public partial class PartenersUC : UserControl {
         public PartenersUC() {
             InitializeComponent();
+            Model.LoadData();
         }
 
         private void AddParteners_Click(object sender, RoutedEventArgs e) {

@@ -6,14 +6,12 @@ using Ticsa.DAL.Models;
 
 namespace Ticsa.ViewModels {
     public class PartnersUCVM {
-        public PartnersBS PartnersBS { get; set; }
-        public PartnerTypesBS PartnerTypesBS { get; set; }
+        public PartnersBS PartnersBS => PartnersBS.Instance;
+        public PartnerTypesBS PartnerTypesBS => PartnerTypesBS.Instance;
         public ObservableCollection<PartnersDTO?>? Partners { get; set; }
         public ObservableCollection<PartnerTypesDTO?>? PartnerTypes { get; set; }
 
         public PartnersUCVM() {
-            PartnersBS = new();
-            PartnerTypesBS = new();
             Task.Run(LoadData).Wait();
         }
 

@@ -4,12 +4,15 @@ using Ticsa.DAL.Models;
 
 namespace Ticsa.BLL.BS {
     public class DeliveryCouponsBS : StdBS<DeliveryCoupons, DeliveryCouponsDP, DeliveryCouponsDTO> {
+        private static readonly Lazy<DeliveryCouponsBS> _instance = new(() => new());
+        public static DeliveryCouponsBS Instance => _instance.Value;
         private OrdersDP _ordersDP;
         private PartnersDP _partnersDP;
 
         public DeliveryCouponsBS() {
-            _ordersDP = new OrdersDP();
-            _partnersDP = new PartnersDP();
+            _ordersDP = OrdersDP.Instance;
+            _partnersDP = PartnersDP.Instance;
+            _dp = DeliveryCouponsDP.Instance;
         }
         protected override DeliveryCouponsDTO ToDTO(DeliveryCoupons entity) {
             DeliveryCouponsDTO dto = base.ToDTO(entity);

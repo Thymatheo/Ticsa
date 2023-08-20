@@ -4,11 +4,14 @@ using Ticsa.DAL.Models;
 
 namespace Ticsa.BLL.BS {
     public class OrderContentsBS : StdBS<OrderContents, OrderContentsDP, OrderContentsDTO> {
+        private static readonly Lazy<OrderContentsBS> _instance = new(() => new());
+        public static OrderContentsBS Instance => _instance.Value;
         private readonly LotsDP _lotsDP;
         private OrdersDP _ordersDP;
         public OrderContentsBS() {
-            _lotsDP = new();
-            _ordersDP = new();
+            _lotsDP = LotsDP.Instance;
+            _ordersDP = OrdersDP.Instance;
+            _dp = OrderContentsDP.Instance;
         }
         protected override OrderContentsDTO ToDTO(OrderContents entity) {
             OrderContentsDTO dto = base.ToDTO(entity);

@@ -2,6 +2,8 @@
 
 namespace Ticsa.DAL.DP {
     public class PartnerTypesDP : StdDP<PartnerTypes> {
+        private static readonly Lazy<PartnerTypesDP> _instance = new(() => new());
+        public static PartnerTypesDP Instance => _instance.Value;
         public const string CLIENT_TYPE = "Client";
         public const string PRODUCER_TYPE = "Producer";
         public PartnerTypesDP() {

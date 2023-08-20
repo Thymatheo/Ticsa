@@ -4,10 +4,13 @@ using Ticsa.DAL.Models;
 
 namespace Ticsa.BLL.BS {
     public class PartnersBS : StdBS<Partners, PartnersDP, PartnersDTO> {
+        private static readonly Lazy<PartnersBS> _instance = new(() => new());
+        public static PartnersBS Instance => _instance.Value;
         private PartnerTypesDP _partnerTypesDP;
 
         public PartnersBS() {
-            _partnerTypesDP = new();
+            _partnerTypesDP = PartnerTypesDP.Instance;
+            _dp = PartnersDP.Instance;
         }
         protected override PartnersDTO ToDTO(Partners entity) {
             PartnersDTO dto = base.ToDTO(entity);

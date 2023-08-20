@@ -15,13 +15,13 @@ namespace Ticsa.ViewModels {
         private const string PRODUCER_TYPE = PartnerTypesDP.PRODUCER_TYPE;
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        public GammesBS GammesBS { get; set; }
-        public LotsBS LotsBS { get; set; }
-        public PartnersBS PartnersBS { get; set; }
-        public OrdersBS OrdersBS { get; set; }
-        public OrderContentsBS OrderContentsBS { get; set; }
-        public DeliveryCouponsBS DeliveryCouponsBS { get; set; }
-        public PartnerTypesDP PartnerTypesDP { get; set; }
+        public GammesBS GammesBS => GammesBS.Instance;
+        public LotsBS LotsBS => LotsBS.Instance;
+        public PartnersBS PartnersBS => PartnersBS.Instance;
+        public OrdersBS OrdersBS => OrdersBS.Instance;
+        public OrderContentsBS OrderContentsBS => OrderContentsBS.Instance;
+        public DeliveryCouponsBS DeliveryCouponsBS => DeliveryCouponsBS.Instance;
+        public PartnerTypesDP PartnerTypesDP => PartnerTypesDP.Instance;
         public ObservableCollection<GammesDTO?>? Gammes { get; set; }
         public ObservableCollection<LotsDTO?>? Lots { get; set; }
         public ObservableCollection<PartnersDTO?>? Clients { get; set; }
@@ -51,13 +51,6 @@ namespace Ticsa.ViewModels {
         }
 
         public OrderUCVM() {
-            GammesBS = new();
-            LotsBS = new();
-            PartnersBS = new();
-            OrdersBS = new();
-            OrderContentsBS = new();
-            DeliveryCouponsBS = new();
-            PartnerTypesDP = new();
             _deliveryCouponFileName = null;
             Task.Run(LoadData).Wait();
         }

@@ -4,9 +4,8 @@ using Ticsa.DAL.Models;
 
 namespace Ticsa.BLL.BS {
     public class StdBS<T, U, V> where T : StdEntity, new() where U : StdDP<T>, new() where V : IDTO<T>, new() {
-        protected readonly U _dp;
+        protected U _dp;
         public StdBS() {
-            _dp = new();
         }
 
         public virtual IEnumerable<V?> Gets() =>

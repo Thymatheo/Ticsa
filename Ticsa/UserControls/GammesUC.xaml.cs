@@ -12,17 +12,19 @@ namespace Ticsa.UserControls {
         public GammesUC() {
             InitializeComponent();
             _menu = (ContextMenu)Resources["ManagerConnectionContextMenu"];
+            Model.LoadData();
         }
 
         private void AddGammes_Click(object sender, RoutedEventArgs e) {
             if (PartnerComboBox.SelectedItem is null) MessageBox.Show("Veuillez selectionner un Producteur");
             else {
                 Model.GammesBS.Add(new() {
-                    IdPartner = (PartnerComboBox.SelectedItem as Partners)!.Id,
+                    IdPartner = (PartnerComboBox.SelectedItem as PartnersDTO)!.Id,
                     Label = GammeLabelTextBox.Text,
                     Summary = SummaryTextBox.Text
                 });
                 Model.LoadGammes();
+
             }
         }
 
@@ -34,7 +36,7 @@ namespace Ticsa.UserControls {
             else if (EntryDateLotsDatePicker.SelectedDate is null) MessageBox.Show("Veuillez selectionner une date d'entrée");
             else {
                 Model.LotsBS.Add(new() {
-                    IdGamme = (GammesComboBox.SelectedItem as Gammes)!.Id,
+                    IdGamme = (GammesComboBox.SelectedItem as GammesDTO)!.Id,
                     Label = LotLabelTextBox.Text,
                     EntryDate = EntryDateLotsDatePicker.SelectedDate.Value,
                     ExpirationDate = ExpirationDateLotsDatePicker.SelectedDate.Value,

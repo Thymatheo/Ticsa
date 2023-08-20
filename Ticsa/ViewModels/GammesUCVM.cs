@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Ticsa.BLL.BS;
 using Ticsa.BLL.DTOs;
@@ -8,20 +9,16 @@ using Ticsa.DAL.DP;
 using Ticsa.DAL.Models;
 
 namespace Ticsa.ViewModels {
-    public class GammesUCVM {
+    public class GammesUCVM{
         private const int PARTNER_TYPE_ID = 2;
-        public GammesBS GammesBS { get; set; }
-        public LotsBS LotsBS { get; set; }
-        public PartnersBS PartnersBS { get; set; }
-        public PartnerTypesDP PartnerTypesDP { get; set; }
+        public GammesBS GammesBS => GammesBS.Instance;
+        public LotsBS LotsBS => LotsBS.Instance;
+        public PartnersBS PartnersBS => PartnersBS.Instance;
+        public PartnerTypesDP PartnerTypesDP => PartnerTypesDP.Instance;
         public ObservableCollection<GammesDTO?>? Gammes { get; set; }
         public ObservableCollection<LotsDTO?>? Lots { get; set; }
         public ObservableCollection<PartnersDTO?>? Partners { get; set; }
         public GammesUCVM() {
-            GammesBS = new();
-            LotsBS = new();
-            PartnersBS = new();
-            PartnerTypesDP = new();
             Task.Run(LoadData).Wait();
         }
         public void LoadData() {

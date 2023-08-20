@@ -2,7 +2,7 @@
 
 namespace Ticsa.DAL.DP {
     public class GammesDP : StdDP<Gammes> {
-        public GammesDP() {
-        }
+        private static readonly Lazy<GammesDP> _instance = new(() => new());
+        public static GammesDP Instance => _instance.Value;
     }
 }
