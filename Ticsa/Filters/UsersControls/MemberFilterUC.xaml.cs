@@ -26,6 +26,7 @@ namespace Ticsa.Filters.UserControls {
             InitializeComponent();
             DataContext = Filter = filter;
             _parent = parent;
+            FilterTextBox.Text = Filter.Value.ToString();
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e) {

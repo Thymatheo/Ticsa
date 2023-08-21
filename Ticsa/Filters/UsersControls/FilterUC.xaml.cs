@@ -21,26 +21,15 @@ namespace Ticsa.Filters.UserControls {
     /// Logique d'interaction pour FilterUC.xaml
     /// </summary>
     public partial class FilterUC : UserControl {
-        public List<IMemberFilter> Filters { get; set; }
-        public Action ResetFilter { get; set; }
-        public Action<Func<object, bool>> ApplyFilter { get; set; }
-        public FilterUC(Action resetFilter, Action<Func<object, bool>> applyFilter, params IMemberFilter[] filters) {
+        public IFiltrableCollection FiltrableCollection { get; set; }
+        public FilterUC(IFiltrableCollection filtrableCollection) {
             InitializeComponent();
-            ResetFilter = resetFilter;
-            ApplyFilter = applyFilter;
-            Filters = new(filters);
-            foreach (IMemberFilter filter in Filters)
+            FiltrableCollection = filtrableCollection;
+            foreach (IMemberFilter filter in FiltrableCollection.Filters)
                 FiltersStackPanel.Children.Add(new MemberFilterUC(filter, this));
         }
         public void Apply() {
-            ResetFilter();
-            ApplyFilter((obj) => {
-                bool filterStatus = true;
-                foreach (IMemberFilter filter in Filters.Where(x => x.IsEnable).ToList()) {
-                    filterStatus = filter.ApplyFilter(obj);
-                }
-                return filterStatus;
-            });
+            FiltrableCollection.ApplyFilter();
         }
     }
 }

@@ -1,7 +1,11 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using Ticsa.BLL.DTOs;
+using Ticsa.BLL.DTOs.Interfaces;
 using Ticsa.DAL.Models;
+using Ticsa.Filters.UserControls;
+using Ticsa.Filters.ViewModels;
 
 namespace Ticsa.UserControls {
     /// <summary>
@@ -10,10 +14,30 @@ namespace Ticsa.UserControls {
     public partial class OrdersUC : UserControl {
         public OrdersUC() {
             InitializeComponent();
+
+            FilterPopupOrdersContent.Content = new FilterUC(Model.Orders);
+            FilterPopupOrderContentsContent.Content = new FilterUC(Model.OrderContents);
+            FilterPopupDeliveryCouponsContent.Content = new FilterUC(Model.DeliveryCoupons);
         }
 
         private async void OrderListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            Model.LoadOrderContents(OrderListView.SelectedItem is not null ? () => Model.OrderContentsBS.GetByIdOrder((OrderListView.SelectedItem as OrdersDTO)!.Id) : null);
+            UdpateFilter(OrderListView, FilterPopupOrderContentsContent?.Content as FilterUC);
+            UdpateFilter(OrderListView, FilterPopupDeliveryCouponsContent?.Content as FilterUC);
+            Model.LastOrderSelected = OrderListView.SelectedItem as OrdersDTO;
+        }
+        private void UdpateFilter(ListView view, FilterUC? filterUC) {
+            if (filterUC != null)
+                if (view.SelectedItem is OrdersDTO dto) {
+                    IMemberFilter memberFilter = filterUC!.FiltrableCollection.Filters[0];
+                    if (memberFilter.IsEnable && memberFilter.Value == dto.OrderTag) {
+                        memberFilter.UdpateFilterValue(false, "");
+                    }
+                    else {
+                        memberFilter.UdpateFilterValue(true, dto.OrderTag);
+                    }
+                    filterUC?.Apply();
+                    view.SelectedItem = null;
+                }
         }
 
         private void Reset_Click(object sender, System.Windows.RoutedEventArgs e) {
@@ -26,11 +50,10 @@ namespace Ticsa.UserControls {
             else if (!int.TryParse(QuantityTextBox.Text, out int quantity)) MessageBox.Show("Veuillez verifié que la quantité possede une valeur de type numérique");
             else {
                 Model.OrderContentsBS.Add(new() {
-                    IdLot = (LotsComboBox.SelectedItem as Lots)!.Id,
-                    IdOrder = (OrdersComboBox.SelectedItem as Orders)!.Id,
+                    IdLot = (LotsComboBox.SelectedItem as LotsDTO)!.Id,
+                    IdOrder = (OrdersComboBox.SelectedItem as OrdersDTO)!.Id,
                     Quantity = quantity
                 });
-                Model.LoadOrderContents();
             }
         }
 
@@ -39,11 +62,10 @@ namespace Ticsa.UserControls {
             else if (OrderDatePicker.SelectedDate is null) MessageBox.Show("Veuillez selectionner une date");
             else {
                 Model.OrdersBS.Add(new() {
-                    IdPartner = (ClientComboBox.SelectedItem as Partners)!.Id,
+                    IdPartner = (ClientComboBox.SelectedItem as PartnersDTO)!.Id,
                     OrderDate = OrderDatePicker.SelectedDate.Value,
                     OrderTag = OrderTagTextBox.Text,
                 });
-                Model.LoadOrders();
             }
         }
 
@@ -52,14 +74,18 @@ namespace Ticsa.UserControls {
             else if (DC_OrdersComboBox.SelectedItem is null) MessageBox.Show("Veuillez selectionner une commande");
             else if (DC_RecieveDatePicker.SelectedDate is null) MessageBox.Show("Veuillez selectionner une date");
             else {
-                Model.DeliveryCouponsBS.Add(new() {
-                    IdOrder = (DC_OrdersComboBox.SelectedItem as Orders)!.Id,
-                    IdPartner = (DC_ProducersComboBox.SelectedItem as Partners)!.Id,
-                    RecieveDate = DC_RecieveDatePicker.SelectedDate.Value,
-                    Label = DC_LabelTextBox.Text,
-                    FilePath = FileManager.Copy(Model.DeliveryCouponFileName!, FileManager.DELIVERYCOUPON_DIRECTORY)
-                });
-                Model.LoadDeliveryCoupons();
+                try {
+                    Model.DeliveryCouponsBS.Add(new() {
+                        IdOrder = (DC_OrdersComboBox.SelectedItem as OrdersDTO)!.Id,
+                        IdPartner = (DC_ProducersComboBox.SelectedItem as PartnersDTO)!.Id,
+                        RecieveDate = DC_RecieveDatePicker.SelectedDate.Value,
+                        Label = DC_LabelTextBox.Text,
+                        FilePath = FileManager.Copy(Model.DeliveryCouponFileName!, FileManager.DELIVERYCOUPON_DIRECTORY)
+                    });
+                }
+                catch {
+                    MessageBox.Show("Veuillez fournir le coupon de livraison");
+                }
             }
         }
 

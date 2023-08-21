@@ -14,8 +14,8 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <CheckBox x:Name="EnableFilterCheckBox" IsChecked="{Binding IsEnable}" Content="{Binding Name}" Grid.Column="0" Margin="5" Padding="5,0,5,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
-        <ComboBox x:Name="FilterComboBox" ItemsSource="{Binding Opp}" IsEnabled="{Binding IsEnable}" SelectedItem="{Binding Opperator}" Grid.Column="1" Margin="5" Padding="5,0,5,0" SelectionChanged="ComboBox_SelectionChanged"/>
-        <TextBox x:Name="FilterTextBox" Grid.Column="2" Margin="5" IsEnabled="{Binding IsEnable}" Padding="5,0,5,0"  HorizontalAlignment="Stretch" TextChanged="TextBox_TextChanged"/>
+        <CheckBox x:Name="EnableFilterCheckBox" IsChecked="{Binding IsEnable, UpdateSourceTrigger=PropertyChanged}" Content="{Binding Name}" Grid.Column="0" Margin="5" Padding="5,0,5,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+        <ComboBox x:Name="FilterComboBox" ItemsSource="{Binding Opp}" IsEnabled="{Binding IsEnable, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Opperator}" Grid.Column="1" Margin="5" Padding="5,0,5,0" SelectionChanged="ComboBox_SelectionChanged"/>
+        <TextBox x:Name="FilterTextBox" Grid.Column="2" Margin="5" IsEnabled="{Binding IsEnable}" Padding="5,0,5,0"  HorizontalAlignment="Stretch" TextChanged="TextBox_TextChanged" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </UserControl>

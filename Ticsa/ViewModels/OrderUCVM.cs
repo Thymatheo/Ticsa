@@ -8,11 +8,14 @@ using Ticsa.BLL.BS;
 using Ticsa.BLL.DTOs;
 using Ticsa.DAL.DP;
 using Ticsa.DAL.Models;
+using Ticsa.Filters;
+using Ticsa.Filters.ViewModels;
 
 namespace Ticsa.ViewModels {
     internal class OrderUCVM : INotifyPropertyChanged {
         private const string CLIENT_TYPE = PartnerTypesDP.CLIENT_TYPE;
         private const string PRODUCER_TYPE = PartnerTypesDP.PRODUCER_TYPE;
+        public const string ORDER_TAG_FILTER_NAME = "Order Tag";
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public GammesBS GammesBS => GammesBS.Instance;
@@ -26,9 +29,10 @@ namespace Ticsa.ViewModels {
         public ObservableCollection<LotsDTO?>? Lots { get; set; }
         public ObservableCollection<PartnersDTO?>? Clients { get; set; }
         public ObservableCollection<PartnersDTO?>? Producers { get; set; }
-        public ObservableCollection<OrdersDTO?>? Orders { get; set; }
-        public ObservableCollection<OrderContentsDTO?>? OrderContents { get; set; }
-        public ObservableCollection<DeliveryCouponsDTO?>? DeliveryCoupons { get; set; }
+        public FiltrableCollection<OrdersDTO?>? Orders { get; set; }
+        public FiltrableCollection<OrderContentsDTO?>? OrderContents { get; set; }
+        public FiltrableCollection<DeliveryCouponsDTO?>? DeliveryCoupons { get; set; }
+        public OrdersDTO? LastOrderSelected { get; set; } = null;
         private string? _deliveryCouponFileName;
         public string? DeliveryCouponFileName {
             get => _deliveryCouponFileName;
@@ -58,9 +62,18 @@ namespace Ticsa.ViewModels {
         public void LoadData() {
             LoadGammes();
             LoadLots();
-            LoadOrders();
-            LoadOrderContents();
-            LoadDeliveryCoupons();
+            OrderContents = new(OrderContentsBS.Gets,
+                new StringFilter(ORDER_TAG_FILTER_NAME, (obj) => ((OrderContentsDTO)obj).Order!.OrderTag),
+                new DateFilter("Order Date", (obj) => ((OrderContentsDTO)obj).Order!.OrderDate),
+                new StringFilter("Lot", (obj) => ((OrderContentsDTO)obj).Lot!.Label));
+            Orders = new(OrdersBS.Gets,
+                new StringFilter(ORDER_TAG_FILTER_NAME, (obj) => ((OrdersDTO)obj).OrderTag),
+                new DateFilter("Order Date", (obj) => ((OrdersDTO)obj).OrderDate),
+                new StringFilter("Partner", (obj) => ((OrdersDTO)obj).Partner!.CompanyName));
+            DeliveryCoupons = new(DeliveryCouponsBS.Gets,
+                new StringFilter(ORDER_TAG_FILTER_NAME, (obj) => ((DeliveryCouponsDTO)obj).Order!.OrderTag),
+                new StringFilter("Label", (obj) => ((DeliveryCouponsDTO)obj).Label),
+                new StringFilter("Partner", (obj) => ((DeliveryCouponsDTO)obj).Partner!.CompanyName));
             LoadParteners();
         }
 
@@ -76,13 +89,6 @@ namespace Ticsa.ViewModels {
                 Producers = new(PartnersBS.GetByIdType(PartnerTypesDP.GetProducer().Id));
         }
 
-        public void LoadDeliveryCoupons() {
-            if (DeliveryCoupons is not null)
-                DeliveryCoupons.Refresh<DeliveryCoupons, DeliveryCouponsDTO>(DeliveryCouponsBS.Gets);
-            else
-                DeliveryCoupons = new(DeliveryCouponsBS.Gets());
-        }
-
         public void LoadGammes() {
             if (Gammes is not null)
                 Gammes.Refresh<Gammes, GammesDTO>(GammesBS.Gets);
@@ -95,20 +101,6 @@ namespace Ticsa.ViewModels {
                 Lots.Refresh<Lots, LotsDTO>(func ?? (LotsBS.Gets));
             else
                 Lots = new(LotsBS.Gets());
-        }
-
-        public void LoadOrders() {
-            if (Orders is not null)
-                Orders.Refresh<Orders, OrdersDTO>(OrdersBS.Gets);
-            else
-                Orders = new(OrdersBS.Gets());
-        }
-
-        public void LoadOrderContents(Func<IEnumerable<OrderContentsDTO?>>? func = null) {
-            if (OrderContents is not null)
-                OrderContents.Refresh<OrderContents, OrderContentsDTO>(func ?? (OrderContentsBS.Gets));
-            else
-                OrderContents = new(OrderContentsBS.Gets());
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "") {

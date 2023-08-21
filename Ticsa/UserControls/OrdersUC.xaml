@@ -22,21 +22,40 @@
     <Grid VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <Button Content="Reset" Click="Reset_Click" Margin="5" Width="400" MaxWidth="400" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"/>
+        <ToggleButton x:Name="TogglePopupButtonOrders" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="0" Margin="5" Padding="5">
+            <StackPanel>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="Filter Order"/>
+                <Popup x:Name="FilterPopupOrders" IsOpen="{Binding IsChecked, ElementName=TogglePopupButtonOrders}">
+                    <Border BorderThickness="1">
+                        <ContentControl x:Name="FilterPopupOrdersContent"/>
+                    </Border>
+                </Popup>
+            </StackPanel>
+        </ToggleButton>
+        <ToggleButton x:Name="TogglePopupOrderContentsButton" HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" Margin="5" Padding="5">
+            <StackPanel>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="Filter Order Content"/>
+                <Popup x:Name="FilterPopupOrderContents" IsOpen="{Binding IsChecked, ElementName=TogglePopupOrderContentsButton}">
+                    <Border BorderThickness="1">
+                        <ContentControl x:Name="FilterPopupOrderContentsContent"/>
+                    </Border>
+                </Popup>
+            </StackPanel>
+        </ToggleButton>
         <StackPanel Grid.RowSpan="3" Grid.Row="1" Orientation="Horizontal" Grid.Column="0">
             <ListView x:Name="OrderListView" 
                       Width="400" MaxWidth="400" 
                       Margin="5" Padding="5" 
-                      SelectionMode="Single" ItemsSource="{Binding Orders, UpdateSourceTrigger=PropertyChanged}" 
-                      VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True" 
+                      SelectionMode="Single" ItemsSource="{Binding Orders.Values, UpdateSourceTrigger=PropertyChanged}" 
+                      VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True"
                       SelectionChanged="OrderListView_SelectionChanged">
                 <ListView.View>
                     <GridView>
@@ -62,7 +81,7 @@
                       Width="400" MaxWidth="400" 
                       Margin="5" Padding="5" 
                       SelectionMode="Single" 
-                      ItemsSource="{Binding OrderContents, UpdateSourceTrigger=PropertyChanged}" 
+                      ItemsSource="{Binding OrderContents.Values, UpdateSourceTrigger=PropertyChanged}" 
                       VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True">
                 <ListView.View>
                     <GridView>
@@ -77,54 +96,68 @@
                 <ComboBox x:Name="LotsComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Lots, UpdateSourceTrigger=PropertyChanged}" 
                     DisplayMemberPath="Label"/>
                 <TextBlock Text="Order :"/>
-                <ComboBox x:Name="OrdersComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Orders, UpdateSourceTrigger=PropertyChanged}" 
+                <ComboBox x:Name="OrdersComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Orders.Source, UpdateSourceTrigger=PropertyChanged}" 
                     DisplayMemberPath="OrderTag"/>
                 <TextBlock Text="Quantité :"/>
                 <TextBox x:Name="QuantityTextBox" Margin="5"/>
                 <Button Content="Ajouter" Click="AddContent_Click" Margin="5"/>
             </StackPanel>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
-            <ListView x:Name="DeliveryCouponslistView" 
-                      Width="400" MaxWidth="400" 
-                      Margin="5" Padding="5" 
-                      SelectionMode="Single" 
-                      ItemsSource="{Binding DeliveryCoupons, UpdateSourceTrigger=PropertyChanged}" 
-                      VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <EventSetter Event="PreviewMouseRightButtonDown" Handler="DeliveryCouponslistView_MouseRightButtonDown" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="OrderTag" DisplayMemberBinding="{Binding Order.OrderTag}"/>
-                        <GridViewColumn Header="Partner" DisplayMemberBinding="{Binding Partner.CompanyName}"/>
-                        <GridViewColumn Header="Label" DisplayMemberBinding="{Binding Label}"/>
-                        <GridViewColumn Header="RecieveDate" DisplayMemberBinding="{Binding RecieveDate}"/>
-                        <GridViewColumn Header="FilePath" DisplayMemberBinding="{Binding FilePath}"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="200" Width="200" Margin="5">
-                <TextBlock Text="Order :"/>
-                <ComboBox x:Name="DC_OrdersComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Orders, UpdateSourceTrigger=PropertyChanged}" 
-                    DisplayMemberPath="OrderTag"/>
-                <TextBlock Text="Producer :"/>
-                <ComboBox x:Name="DC_ProducersComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Producers, UpdateSourceTrigger=PropertyChanged}" 
-                    DisplayMemberPath="CompanyName"/>
-                <TextBlock Text="Label :"/>
-                <TextBox x:Name="DC_LabelTextBox" Margin="5"/>
-                <TextBlock Text="Recieve Date :"/>
-                <DatePicker x:Name="DC_RecieveDatePicker" Margin="5"/>
-                <StackPanel AllowDrop="True">
-                    <TextBlock Text="Drag the Delivery Coupon below :" Margin="5" AllowDrop="True" Drop="DeliveryCoupon_Drop"/>
-                    <Border BorderThickness="1" CornerRadius="5" BorderBrush="Black" Margin="5" AllowDrop="True" Drop="DeliveryCoupon_Drop">
-                        <Button IsEnabled="False" Content="{Binding DeliveryCouponFileNameShort, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" Padding="5" AllowDrop="True" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
-                    </Border>
+        <Grid Grid.RowSpan="2" Grid.Row="2" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <ToggleButton x:Name="TogglePopupDeliveryCouponsButton" HorizontalAlignment="Stretch" Grid.Row="0" Margin="5" Padding="5">
+                <StackPanel>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="Filter Order Content"/>
+                    <Popup x:Name="FilterPopupDeliveryCoupons" IsOpen="{Binding IsChecked, ElementName=TogglePopupDeliveryCouponsButton}">
+                        <Border BorderThickness="1">
+                            <ContentControl x:Name="FilterPopupDeliveryCouponsContent"/>
+                        </Border>
+                    </Popup>
                 </StackPanel>
-                <Button Content="Ajouter" Click="AddDC_Click" Margin="5"/>
+            </ToggleButton>
+            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                <ListView x:Name="DeliveryCouponslistView"
+                          Width="400" MaxWidth="400"
+                          Margin="5" Padding="5" 
+                          SelectionMode="Single"
+                          ItemsSource="{Binding DeliveryCoupons.Values, UpdateSourceTrigger=PropertyChanged}" 
+                          VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <EventSetter Event="PreviewMouseRightButtonDown" Handler="DeliveryCouponslistView_MouseRightButtonDown" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="OrderTag" DisplayMemberBinding="{Binding Order.OrderTag}"/>
+                            <GridViewColumn Header="Partner" DisplayMemberBinding="{Binding Partner.CompanyName}"/>
+                            <GridViewColumn Header="Label" DisplayMemberBinding="{Binding Label}"/>
+                            <GridViewColumn Header="RecieveDate" DisplayMemberBinding="{Binding RecieveDate}"/>
+                            <GridViewColumn Header="FilePath" DisplayMemberBinding="{Binding FilePath}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="200" Width="200" Margin="5">
+                    <TextBlock Text="Order :"/>
+                    <ComboBox x:Name="DC_OrdersComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Orders.Source, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="OrderTag"/>
+                    <TextBlock Text="Producer :"/>
+                    <ComboBox x:Name="DC_ProducersComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Producers, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="CompanyName"/>
+                    <TextBlock Text="Label :"/>
+                    <TextBox x:Name="DC_LabelTextBox" Margin="5"/>
+                    <TextBlock Text="Recieve Date :"/>
+                    <DatePicker x:Name="DC_RecieveDatePicker" Margin="5"/>
+                    <StackPanel AllowDrop="True">
+                        <TextBlock Text="Drag the Delivery Coupon below :" Margin="5" AllowDrop="True" Drop="DeliveryCoupon_Drop"/>
+                        <Border BorderThickness="1" CornerRadius="5" BorderBrush="Black" Margin="5" AllowDrop="True" Drop="DeliveryCoupon_Drop">
+                            <Button IsEnabled="False" Content="{Binding DeliveryCouponFileNameShort, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" Padding="5" AllowDrop="True" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+                        </Border>
+                    </StackPanel>
+                    <Button Content="Ajouter" Click="AddDC_Click" Margin="5"/>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
