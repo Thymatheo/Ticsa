@@ -31,6 +31,14 @@ namespace Ticsa.DAL.Models {
             }
             catch { return false; }
         }
+        public bool DeleteAll(Predicate<T> predicate) {
+            try {
+                RemoveAll(predicate);
+                SaveChange();
+                return true;
+            }
+            catch { return false; }
+        }
         public void SaveChange() {
             bool isSucces = false;
             while (!isSucces) {

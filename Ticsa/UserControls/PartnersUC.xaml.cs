@@ -34,5 +34,16 @@ namespace Ticsa.UserControls {
                 Model.LoadData();
             }
         }
+
+        private void ParntersListView_PreviewMouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            ParntersListView.ContextMenu = (ContextMenu)Resources["PartnersContextMenu"];
+        }
+
+        private void RemovePartnersMenuItem_Click(object sender, RoutedEventArgs e) {
+            if ((ParntersListView.SelectedItem is Partners dto))
+                if (MessageBox.Show($"Etes-vous sur de vouloir suprimer la commande {dto!.CompanyName}", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes) {
+                    Model.PartnersBS.Delete(dto.Id);
+                }
+        }
     }
 }

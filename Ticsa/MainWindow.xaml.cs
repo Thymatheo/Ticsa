@@ -7,27 +7,21 @@ namespace Ticsa {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-
-        private GammesUC GammesUC { get; set; }
-        private OrdersUC OrdersUC { get; set; }
-        private PartenersUC PartenersUC { get; set; }
         public MainWindow() {
             InitializeComponent();
-            MainContentControl.Content = GammesUC = new();
-            OrdersUC = new();
-            PartenersUC = new();
+            MainContentControl.Content = new GammesUC();
         }
 
         private void GammesMenuItem_Click(object sender, RoutedEventArgs e) {
-            MainContentControl.Content = GammesUC;
+            MainContentControl.Content = new GammesUC();
         }
 
         private void OrdersMenuItem_Click(object sender, RoutedEventArgs e) {
-            MainContentControl.Content = OrdersUC;
+            MainContentControl.Content = new OrdersUC();
         }
 
         private void PartnersMenuItem_Click(object sender, RoutedEventArgs e) {
-            MainContentControl.Content = PartenersUC;
+            MainContentControl.Content = new PartenersUC();
         }
     }
 }

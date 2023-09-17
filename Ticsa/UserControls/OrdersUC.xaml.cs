@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Ticsa.BLL.DTOs;
 using Ticsa.BLL.DTOs.Interfaces;
 using Ticsa.DAL.Models;
@@ -14,30 +15,14 @@ namespace Ticsa.UserControls {
     public partial class OrdersUC : UserControl {
         public OrdersUC() {
             InitializeComponent();
-
             FilterPopupOrdersContent.Content = new FilterUC(Model.Orders);
             FilterPopupOrderContentsContent.Content = new FilterUC(Model.OrderContents);
             FilterPopupDeliveryCouponsContent.Content = new FilterUC(Model.DeliveryCoupons);
         }
-
-        private async void OrderListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            UdpateFilter(OrderListView, FilterPopupOrderContentsContent?.Content as FilterUC);
-            UdpateFilter(OrderListView, FilterPopupDeliveryCouponsContent?.Content as FilterUC);
-            Model.LastOrderSelected = OrderListView.SelectedItem as OrdersDTO;
-        }
-        private void UdpateFilter(ListView view, FilterUC? filterUC) {
-            if (filterUC != null)
-                if (view.SelectedItem is OrdersDTO dto) {
-                    IMemberFilter memberFilter = filterUC!.FiltrableCollection.Filters[0];
-                    if (memberFilter.IsEnable && memberFilter.Value == dto.OrderTag) {
-                        memberFilter.UdpateFilterValue(false, "");
-                    }
-                    else {
-                        memberFilter.UdpateFilterValue(true, dto.OrderTag);
-                    }
-                    filterUC?.Apply();
-                    view.SelectedItem = null;
-                }
+        private void ResetFilter() {
+            (FilterPopupOrdersContent.Content as FilterUC)?.Apply();
+            (FilterPopupOrdersContent.Content as FilterUC)?.Apply();
+            (FilterPopupDeliveryCouponsContent.Content as FilterUC)?.Apply();
         }
 
         private void Reset_Click(object sender, System.Windows.RoutedEventArgs e) {
@@ -54,6 +39,7 @@ namespace Ticsa.UserControls {
                     IdOrder = (OrdersComboBox.SelectedItem as OrdersDTO)!.Id,
                     Quantity = quantity
                 });
+                (FilterPopupOrderContentsContent.Content as FilterUC)?.Apply();
             }
         }
 
@@ -66,6 +52,7 @@ namespace Ticsa.UserControls {
                     OrderDate = OrderDatePicker.SelectedDate.Value,
                     OrderTag = OrderTagTextBox.Text,
                 });
+                (FilterPopupOrdersContent.Content as FilterUC)?.Apply();
             }
         }
 
@@ -82,6 +69,7 @@ namespace Ticsa.UserControls {
                         Label = DC_LabelTextBox.Text,
                         FilePath = FileManager.Copy(Model.DeliveryCouponFileName!, FileManager.DELIVERYCOUPON_DIRECTORY)
                     });
+                    (FilterPopupDeliveryCouponsContent.Content as FilterUC)?.Apply();
                 }
                 catch {
                     MessageBox.Show("Veuillez fournir le coupon de livraison");
@@ -102,10 +90,64 @@ namespace Ticsa.UserControls {
         private void DeliveryCouponslistView_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
             DeliveryCouponslistView.ContextMenu = (ContextMenu)Resources["DeliveryCouponContextMenu"];
         }
+        private void OrdersListView_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e) {
+            OrderListView.ContextMenu = (ContextMenu)Resources["OrderContextMenu"];
+        }
+        private void OrderContentsListView_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e) {
+            OrderContentsListView.ContextMenu = (ContextMenu)Resources["OrderContentsContextMenu"];
+        }
 
 
         private void OpenFile_Click(object sender, RoutedEventArgs e) {
             FileManager.Open(FileManager.DELIVERYCOUPON_DIRECTORY, (DeliveryCouponslistView.SelectedItem as DeliveryCoupons)?.FilePath);
+        }
+
+
+        private void UpdateOrderMenuItem_Click(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void RemoveOrderMenuItem_Click(object sender, RoutedEventArgs e) {
+            if ((OrderListView.SelectedItem is OrdersDTO dto))
+                if (MessageBox.Show($"Etes-vous sur de vouloir suprimer la commande {dto!.OrderTag}", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes) {
+                    Model.OrdersBS.Delete(dto.Id);
+                    ResetFilter();
+                }
+        }
+
+        private void UpdateOrderContentsMenuItem_Click(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void RemoveOrderContentsMenuItem_Click(object sender, RoutedEventArgs e) {
+            if ((OrderContentsListView.SelectedItem is OrderContentsDTO dto))
+                if (MessageBox.Show($"Etes-vous sur de vouloir suprimer le contenu de la commande {dto!.Order!.OrderTag}", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes) {
+                    Model.OrderContentsBS.Delete(dto.Id);
+                    ResetFilter();
+                }
+        }
+        private void FilterOrdersMenuItem_Click(object sender, RoutedEventArgs e) {
+            OrderListView.UpdateFilter<OrdersDTO>(FilterPopupOrderContentsContent?.Content as FilterUC, (dto) => dto.OrderTag);
+            OrderListView.UpdateFilter<OrdersDTO>(FilterPopupDeliveryCouponsContent?.Content as FilterUC, (dto) => dto.OrderTag);
+        }
+
+        private void FilterOrderContentsMenuItem_Click(object sender, RoutedEventArgs e) {
+            OrderContentsListView.UpdateFilter<OrderContentsDTO>(FilterPopupOrdersContent?.Content as FilterUC, (dto) => dto.Order!.OrderTag);
+            OrderContentsListView.UpdateFilter<OrderContentsDTO>(FilterPopupDeliveryCouponsContent?.Content as FilterUC, (dto) => dto.Order!.OrderTag);
+        }
+
+        private void RemoveDeliveryCouponsMenuItem_Click(object sender, RoutedEventArgs e) {
+
+            OrderContentsListView.UpdateFilter<DeliveryCouponsDTO>(FilterPopupOrdersContent?.Content as FilterUC, (dto) => dto.Order!.OrderTag);
+            OrderContentsListView.UpdateFilter<DeliveryCouponsDTO>(FilterPopupDeliveryCouponsContent?.Content as FilterUC, (dto) => dto.Order!.OrderTag);
+        }
+
+        private void FilterDeliveryCouponsMenuItem_Click(object sender, RoutedEventArgs e) {
+            if ((DeliveryCouponslistView.SelectedItem is DeliveryCouponsDTO dto))
+                if (MessageBox.Show($"Etes-vous sur de vouloir suprimer le coupon de livraison {dto!.Label}", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes) {
+                    Model.DeliveryCouponsBS.Delete(dto.Id);
+                    ResetFilter();
+                }
         }
     }
 }

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Controls;
+using Ticsa.BLL.DTOs;
 using Ticsa.BLL.DTOs.Interfaces;
 using Ticsa.DAL.Models;
 using Ticsa.Filters;
+using Ticsa.Filters.UserControls;
+using Ticsa.Filters.ViewModels;
 
 namespace Ticsa {
     internal static class Utils {
@@ -23,11 +27,26 @@ namespace Ticsa {
             foreach (U? lot in lots)
                 col.Add(lot);
         }
-        public static void ApplyFilter<T>(this ObservableCollection<T?> col, IEnumerable<T?> lots){
+        public static void ApplyFilter<T>(this ObservableCollection<T?> col, IEnumerable<T?> lots) {
             col.Clear();
             foreach (T? lot in lots)
                 col.Add(lot);
 
+        }
+
+        public static void UpdateFilter<T>(this ListView view, FilterUC? filterUC, Func<T, string> predicate) {
+            if (filterUC != null)
+                if (view.SelectedItem is T dto) {
+                    IMemberFilter memberFilter = filterUC!.FiltrableCollection.Filters[0];
+                    if (memberFilter.IsEnable && memberFilter.Value == predicate(dto)) {
+                        memberFilter.UdpateFilterValue(false, "");
+                    }
+                    else {
+                        memberFilter.UdpateFilterValue(true, predicate(dto));
+                    }
+                    filterUC?.Apply();
+                    view.SelectedItem = null;
+                }
         }
     }
 }

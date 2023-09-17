@@ -7,7 +7,7 @@ namespace Ticsa.BLL.BS {
         private static readonly Lazy<OrderContentsBS> _instance = new(() => new());
         public static OrderContentsBS Instance => _instance.Value;
         private readonly LotsDP _lotsDP;
-        private OrdersDP _ordersDP;
+        private readonly OrdersDP _ordersDP;
         public OrderContentsBS() {
             _lotsDP = LotsDP.Instance;
             _ordersDP = OrdersDP.Instance;
@@ -33,6 +33,12 @@ namespace Ticsa.BLL.BS {
                 return base.Add(entity);
             }
             else return null;
+        }
+        public override bool Delete(Guid id) {
+            Lots lot = _lotsDP.Get(id)!;
+            lot.Quantity += Get(id)!.Quantity;
+            _lotsDP.Update(lot);
+            return base.Delete(id);
         }
     }
 }

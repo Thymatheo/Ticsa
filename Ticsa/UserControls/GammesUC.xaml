@@ -12,6 +12,27 @@
     <UserControl.DataContext>
         <ViewModel:GammesUCVM x:Name="Model"/>
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <ContextMenu x:Key="GammeContextMenu">
+            <MenuItem x:Name="RemoveGammeMenuItem" Header="Supprimer"
+                   Click="RemoveGammeMenuItem_Click"
+                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+            <MenuItem x:Name="UpdateGammeMenuItem" Header="Modifier"
+                   Click="UpdateGammeMenuItem_Click"
+                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+            <MenuItem x:Name="FilterMenuItem" Header="Filtrer"
+                   Click="FilterMenuItem_Click"
+                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+        </ContextMenu>
+        <ContextMenu x:Key="LotContextMenu">
+            <MenuItem x:Name="RemoveLotMenuItem" Header="Supprimer"
+                   Click="RemoveLotMenuItem_Click"
+                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+            <MenuItem x:Name="UpdateLotMenuItem" Header="Modifier"
+                   Click="UpdateLotMenuItem_Click"
+                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+        </ContextMenu>
+    </UserControl.Resources>
     <Grid VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -47,7 +68,7 @@
                 Width="400" MaxWidth="400" Margin="5" Padding="5" 
                 SelectionMode="Single" ItemsSource="{Binding Gammes.Values, UpdateSourceTrigger=Default}" 
                 VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True"
-                SelectionChanged="GammesListView_SelectionChanged">
+                PreviewMouseRightButtonDown="GammesListView_PreviewMouseRightButtonDown">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Partner" DisplayMemberBinding="{Binding Partner.CompanyName}"/>
@@ -74,7 +95,7 @@
                 ItemsSource="{Binding Lots.Values,  UpdateSourceTrigger=PropertyChanged}" 
                 VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" 
                 IsSynchronizedWithCurrentItem="True"
-                SelectionChanged="LotsListView_SelectionChanged">
+                PreviewMouseRightButtonDown="LotsListView_PreviewMouseRightButtonDown">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Label" DisplayMemberBinding="{Binding Label}"/>
@@ -90,7 +111,7 @@
                 <TextBox x:Name="LotLabelTextBox" Margin="5"/>
                 <TextBlock Text="Quantité :"/>
                 <TextBox x:Name="QuantityTextBox" Margin="5"/>
-                <ComboBox x:Name="GammesComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Gammes.Source, UpdateSourceTrigger=PropertyChanged}" 
+                <ComboBox x:Name="GammesComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Gammes.Values, UpdateSourceTrigger=PropertyChanged}" 
                     DisplayMemberPath="Label"/>
                 <TextBlock Text="Date de reception :"/>
                 <DatePicker x:Name="EntryDateLotsDatePicker" Margin="5"/>

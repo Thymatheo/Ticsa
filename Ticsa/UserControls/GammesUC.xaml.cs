@@ -3,11 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Ticsa.BLL.DTOs;
 using Ticsa.DAL.Models;
 using Ticsa.Filters;
 using Ticsa.Filters.UserControls;
 using Ticsa.Filters.ViewModels;
+using Ticsa;
 
 namespace Ticsa.UserControls {
     /// <summary>
@@ -53,23 +55,6 @@ namespace Ticsa.UserControls {
             }
         }
 
-        private void GammesListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            FilterUC filter = (FilterPopupLotsContent.Content as FilterUC);
-            if (filter != null)
-                if (GammesListView.SelectedItem is GammesDTO dto) {
-                    Model.LastSelectedGamme = dto;
-                    if (filter!.FiltrableCollection.Filters[0].IsEnable && filter!.FiltrableCollection.Filters[0].Value == dto.Label) {
-                        filter!.FiltrableCollection.Filters[0].IsEnable = false;
-                        filter!.FiltrableCollection.Filters[0].Value = "";
-                    }
-                    else {
-                        filter!.FiltrableCollection.Filters[0].IsEnable = true;
-                        filter!.FiltrableCollection.Filters[0].Value = dto.Label;
-                    }
-                    filter?.Apply();
-                    GammesListView.SelectedItem = null;
-                }
-        }
         private void UdpateFilter(ListView view, FilterUC? filterUC) {
             if (filterUC != null)
                 if (view.SelectedItem is OrdersDTO dto) {
@@ -85,8 +70,41 @@ namespace Ticsa.UserControls {
                 }
         }
 
-        private void LotsListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            LotsListView.SelectedItem = null;
+        private void RemoveGammeMenuItem_Click(object sender, RoutedEventArgs e) {
+            if ((GammesListView.SelectedItem is GammesDTO dto))
+                if (MessageBox.Show($"Etes-vous sur de vouloir suprimer la gamme {dto!.Label}", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes) {
+                    Model.GammesBS.Delete(dto.Id);
+                    (FilterPopupLotsContent.Content as FilterUC)?.Apply();
+                    (FilterPopupGammesContent.Content as FilterUC)?.Apply();
+                }
+        }
+
+        private void UpdateGammeMenuItem_Click(object sender, RoutedEventArgs e) {
+            MessageBox.Show("udpate");
+        }
+        private void GammesListView_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e) {
+            GammesListView.ContextMenu = (ContextMenu)Resources["GammeContextMenu"];
+        }
+
+        private void FilterMenuItem_Click(object sender, RoutedEventArgs e) {
+            GammesListView.UpdateFilter<GammesDTO>(FilterPopupLotsContent.Content as FilterUC, dto => dto.Label);
+        }
+
+        private void UpdateLotMenuItem_Click(object sender, RoutedEventArgs e) {
+            MessageBox.Show("udpate");
+        }
+
+        private void RemoveLotMenuItem_Click(object sender, RoutedEventArgs e) {
+            if ((LotsListView.SelectedItem is LotsDTO dto))
+                if (MessageBox.Show($"Etes-vous sur de vouloir suprimer le lots {dto!.Label}", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes) {
+                    Model.LotsBS.Delete(dto.Id);
+                    (FilterPopupLotsContent.Content as FilterUC)?.Apply();
+                    (FilterPopupGammesContent.Content as FilterUC)?.Apply();
+                }
+        }
+
+        private void LotsListView_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e) {
+            LotsListView.ContextMenu = (ContextMenu)Resources["LotContextMenu"];
         }
     }
 }

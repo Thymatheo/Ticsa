@@ -9,7 +9,7 @@ namespace Ticsa.DAL.DP {
         }
 
         public IEnumerable<T> Gets() => Entities;
-        public T? Get(Guid id) => Entities.FirstOrDefault(x => x.Id == id, null);
+        public T? Get(Guid id) => Entities.FirstOrDefault(x => x!.Id == id, null);
         public T Add(T entity) {
             entity.Id = Guid.NewGuid();
             return Entities.Add(entity);
@@ -19,6 +19,8 @@ namespace Ticsa.DAL.DP {
 
         public bool Delete(Guid id) =>
             Entities.Delete(id);
+        public bool Deletes(Predicate<T> match) =>
+            Entities.DeleteAll(match);
 
         public IEnumerable<T> GetsBy(Func<T, bool> predicate) => Entities.Where(predicate);
         public T? GetBy(Func<T?, bool> predicate) => Entities.FirstOrDefault(predicate);

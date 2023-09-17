@@ -10,11 +10,33 @@
 	         HorizontalContentAlignment="Stretch"
 	         VerticalContentAlignment="Stretch">
     <UserControl.Resources>
-        <ContextMenu x:Key="DeliveryCouponContextMenu">
+        <ContextMenu x:Key="OrderContextMenu">
+            <MenuItem x:Name="RemoveOrderMenuItem" Header="Supprimer"
+                   Click="RemoveOrderMenuItem_Click"
+                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+            <MenuItem x:Name="FilterMenuItem" Header="Filtrer"
+                   Click="FilterOrdersMenuItem_Click"
+                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+        </ContextMenu>
+        <ContextMenu x:Key="OrderContentsContextMenu">
+            <MenuItem x:Name="RemoveOrderContentsMenuItem" Header="Supprimer"
+                   Click="RemoveOrderContentsMenuItem_Click"
+                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+            <MenuItem x:Name="FilterOrderContentsMenuItem" Header="Filtrer"
+                   Click="FilterOrderContentsMenuItem_Click"
+                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+        </ContextMenu>
+        <ContextMenu x:Key="DeliveryCouponsContextMenu">
             <MenuItem Header="Open file"
                       Click="OpenFile_Click"
                       CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
-        </ContextMenu>
+            <MenuItem x:Name="RemoveDeliveryCouponsMenuItem" Header="Supprimer"
+                   Click="RemoveDeliveryCouponsMenuItem_Click"
+                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+            <MenuItem x:Name="FilterDeliveryCouponsMenuItem" Header="Filtrer"
+                   Click="FilterDeliveryCouponsMenuItem_Click"
+                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+            </ContextMenu>
     </UserControl.Resources>
     <UserControl.DataContext>
         <ViewModel:OrderUCVM x:Name="Model"/>
@@ -51,12 +73,12 @@
             </StackPanel>
         </ToggleButton>
         <StackPanel Grid.RowSpan="3" Grid.Row="1" Orientation="Horizontal" Grid.Column="0">
-            <ListView x:Name="OrderListView" 
+            <ListView x:Name="OrderListView"
                       Width="400" MaxWidth="400" 
                       Margin="5" Padding="5" 
                       SelectionMode="Single" ItemsSource="{Binding Orders.Values, UpdateSourceTrigger=PropertyChanged}" 
                       VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True"
-                      SelectionChanged="OrderListView_SelectionChanged">
+                      PreviewMouseRightButtonDown="OrdersListView_PreviewMouseRightButtonDown">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Partner" DisplayMemberBinding="{Binding Partner.CompanyName}"/>
@@ -77,12 +99,13 @@
             </StackPanel>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
-            <ListView x:Name="LotsListView" 
+            <ListView x:Name="OrderContentsListView" 
                       Width="400" MaxWidth="400" 
                       Margin="5" Padding="5" 
                       SelectionMode="Single" 
                       ItemsSource="{Binding OrderContents.Values, UpdateSourceTrigger=PropertyChanged}" 
-                      VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True">
+                      VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True"
+                      PreviewMouseRightButtonDown="OrderContentsListView_PreviewMouseRightButtonDown">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Lot" DisplayMemberBinding="{Binding Lot.Label}"/>
@@ -96,7 +119,7 @@
                 <ComboBox x:Name="LotsComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Lots, UpdateSourceTrigger=PropertyChanged}" 
                     DisplayMemberPath="Label"/>
                 <TextBlock Text="Order :"/>
-                <ComboBox x:Name="OrdersComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Orders.Source, UpdateSourceTrigger=PropertyChanged}" 
+                <ComboBox x:Name="OrdersComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Orders.Values, UpdateSourceTrigger=PropertyChanged}" 
                     DisplayMemberPath="OrderTag"/>
                 <TextBlock Text="Quantité :"/>
                 <TextBox x:Name="QuantityTextBox" Margin="5"/>
@@ -142,7 +165,7 @@
                 </ListView>
                 <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="200" Width="200" Margin="5">
                     <TextBlock Text="Order :"/>
-                    <ComboBox x:Name="DC_OrdersComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Orders.Source, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="OrderTag"/>
+                    <ComboBox x:Name="DC_OrdersComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Orders.Values, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="OrderTag"/>
                     <TextBlock Text="Producer :"/>
                     <ComboBox x:Name="DC_ProducersComboBox" Margin="5" Width="Auto" ItemsSource="{Binding Producers, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="CompanyName"/>
                     <TextBlock Text="Label :"/>
