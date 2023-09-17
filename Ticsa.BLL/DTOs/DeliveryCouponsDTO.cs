@@ -10,7 +10,7 @@ namespace Ticsa.BLL.DTOs {
         public Guid IdPartner => BaseEntity!.IdPartner;
         public Guid IdOrder => BaseEntity!.IdOrder;
         public DeliveryCoupons? BaseEntity { get; set; }
-        public string Label => BaseEntity!.Label;
+        public string Label => BaseEntity!.Label!;
         public DateTime RecieveDate => BaseEntity!.RecieveDate;
         public string? FilePath => BaseEntity!.FilePath;
         public Guid Id => BaseEntity!.Id;

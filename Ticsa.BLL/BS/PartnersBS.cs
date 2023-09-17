@@ -25,7 +25,7 @@ namespace Ticsa.BLL.BS {
         }
 
         public IEnumerable<PartnersDTO?> GetByIdType(Guid idType) =>
-             _dp.GetsBy(x => x.IdPartnerType == idType).Select(ToDTO);
+             _dp!.GetsBy(x => x.IdPartnerType == idType).Select(ToDTO);
         public override bool Delete(Guid id) {
             _gammesDP.Deletes(x => x.IdPartner == id);
             _ordersDP.Deletes(x => x.IdPartner == id);

@@ -63,17 +63,17 @@ namespace Ticsa.ViewModels {
             LoadGammes();
             LoadLots();
             OrderContents = new(OrderContentsBS.Gets,
-                new StringFilter(ORDER_TAG_FILTER_NAME, (obj) => ((OrderContentsDTO)obj).Order!.OrderTag),
+                new StringFilter(ORDER_TAG_FILTER_NAME, (obj) => ((OrderContentsDTO)obj).Order!.OrderTag!),
                 new DateFilter("Order Date", (obj) => ((OrderContentsDTO)obj).Order!.OrderDate),
-                new StringFilter("Lot", (obj) => ((OrderContentsDTO)obj).Lot!.Label));
+                new StringFilter("Lot", (obj) => ((OrderContentsDTO)obj).Lot!.Label!));
             Orders = new(OrdersBS.Gets,
                 new StringFilter(ORDER_TAG_FILTER_NAME, (obj) => ((OrdersDTO)obj).OrderTag),
                 new DateFilter("Order Date", (obj) => ((OrdersDTO)obj).OrderDate),
-                new StringFilter("Partner", (obj) => ((OrdersDTO)obj).Partner!.CompanyName));
+                new StringFilter("Partner", (obj) => ((OrdersDTO)obj).Partner!.CompanyName!));
             DeliveryCoupons = new(DeliveryCouponsBS.Gets,
-                new StringFilter(ORDER_TAG_FILTER_NAME, (obj) => ((DeliveryCouponsDTO)obj).Order!.OrderTag),
+                new StringFilter(ORDER_TAG_FILTER_NAME, (obj) => ((DeliveryCouponsDTO)obj).Order!.OrderTag!),
                 new StringFilter("Label", (obj) => ((DeliveryCouponsDTO)obj).Label),
-                new StringFilter("Partner", (obj) => ((DeliveryCouponsDTO)obj).Partner!.CompanyName));
+                new StringFilter("Partner", (obj) => ((DeliveryCouponsDTO)obj).Partner!.CompanyName!));
             LoadParteners();
         }
 

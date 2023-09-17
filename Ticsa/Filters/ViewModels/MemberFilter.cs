@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -44,7 +45,7 @@ namespace Ticsa.Filters.ViewModels {
         };
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null) {
+        protected void OnPropertyChanged([CallerMemberName] string? name = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
         private bool _isEnable;
@@ -60,23 +61,23 @@ namespace Ticsa.Filters.ViewModels {
         public Func<string, U> Parse { get; set; }
         private U _value => Parse(Value);
         public string Value {
-            get => val; set {
+            get => val!; set {
                 val = value;
                 OnPropertyChanged();
             }
         }
-        private string val;
+        private string? val;
         protected Dictionary<string, Func<U, U, bool>>? Opperators { get; set; }
         public List<string> Opp => Opperators!.Keys.ToList();
-        public string? Opperator { get; set; } = EQUAL_FILTER;
+        public string Opperator { get; set; } = EQUAL_FILTER;
         public MemberFilter(string name, Func<object, U> getEntity, Func<string, U> parse, U defaultValue) {
             Name = name;
             GetEntity = getEntity;
             Parse = parse;
-            Value = defaultValue.ToString();
+            Value = defaultValue!.ToString()!;
         }
         public bool ApplyFilter(object entity) =>
-            Opperators![Opperator!](GetEntity(entity), _value);
+            Opperators![Opperator](GetEntity(entity), _value);
 
         public void UdpateFilterValue(bool isEnable, string value) {
             IsEnable = isEnable;
@@ -107,5 +108,9 @@ namespace Ticsa.Filters.ViewModels {
         public static bool operator !=(Str a, Str b) => a.Value != b.Value;
         public readonly bool Contains(Str val) => Value.Contains(val.Value);
         public override string ToString() => Value.ToString();
+        public override bool Equals([NotNullWhen(true)] object? obj) {
+            return base.Equals(obj);
+        }
+        public override int GetHashCode() => Value.GetHashCode();
     }
 }

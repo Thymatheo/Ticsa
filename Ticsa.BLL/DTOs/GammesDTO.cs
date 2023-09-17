@@ -8,8 +8,8 @@ namespace Ticsa.BLL.DTOs {
         public Partners? Partner { get; set; }
         public Guid IdPartner => BaseEntity!.IdPartner;
         public Gammes? BaseEntity { get; set; }
-        public string Label => BaseEntity!.Label;
-        public string Summary => BaseEntity!.Summary;
+        public string Label => BaseEntity!.Label!;
+        public string Summary => BaseEntity!.Summary!;
         public Guid Id => BaseEntity!.Id;
 
         public GammesDTO Init(PartnersDP partnersDP) {

@@ -15,9 +15,9 @@ namespace Ticsa.UserControls {
     public partial class OrdersUC : UserControl {
         public OrdersUC() {
             InitializeComponent();
-            FilterPopupOrdersContent.Content = new FilterUC(Model.Orders);
-            FilterPopupOrderContentsContent.Content = new FilterUC(Model.OrderContents);
-            FilterPopupDeliveryCouponsContent.Content = new FilterUC(Model.DeliveryCoupons);
+            FilterPopupOrdersContent.Content = new FilterUC(Model.Orders!);
+            FilterPopupOrderContentsContent.Content = new FilterUC(Model.OrderContents!);
+            FilterPopupDeliveryCouponsContent.Content = new FilterUC(Model.DeliveryCoupons!);
         }
         private void ResetFilter() {
             (FilterPopupOrdersContent.Content as FilterUC)?.Apply();
@@ -132,14 +132,14 @@ namespace Ticsa.UserControls {
         }
 
         private void FilterOrderContentsMenuItem_Click(object sender, RoutedEventArgs e) {
-            OrderContentsListView.UpdateFilter<OrderContentsDTO>(FilterPopupOrdersContent?.Content as FilterUC, (dto) => dto.Order!.OrderTag);
-            OrderContentsListView.UpdateFilter<OrderContentsDTO>(FilterPopupDeliveryCouponsContent?.Content as FilterUC, (dto) => dto.Order!.OrderTag);
+            OrderContentsListView.UpdateFilter<OrderContentsDTO>(FilterPopupOrdersContent?.Content as FilterUC, (dto) => dto.Order!.OrderTag!);
+            OrderContentsListView.UpdateFilter<OrderContentsDTO>(FilterPopupDeliveryCouponsContent?.Content as FilterUC, (dto) => dto.Order!.OrderTag!);
         }
 
         private void RemoveDeliveryCouponsMenuItem_Click(object sender, RoutedEventArgs e) {
 
-            OrderContentsListView.UpdateFilter<DeliveryCouponsDTO>(FilterPopupOrdersContent?.Content as FilterUC, (dto) => dto.Order!.OrderTag);
-            OrderContentsListView.UpdateFilter<DeliveryCouponsDTO>(FilterPopupDeliveryCouponsContent?.Content as FilterUC, (dto) => dto.Order!.OrderTag);
+            OrderContentsListView.UpdateFilter<DeliveryCouponsDTO>(FilterPopupOrdersContent?.Content as FilterUC, (dto) => dto.Order!.OrderTag!);
+            OrderContentsListView.UpdateFilter<DeliveryCouponsDTO>(FilterPopupDeliveryCouponsContent?.Content as FilterUC, (dto) => dto.Order!.OrderTag!);
         }
 
         private void FilterDeliveryCouponsMenuItem_Click(object sender, RoutedEventArgs e) {

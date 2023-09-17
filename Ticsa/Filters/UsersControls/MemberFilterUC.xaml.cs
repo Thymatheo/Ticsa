@@ -38,7 +38,7 @@ namespace Ticsa.Filters.UserControls {
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e) {
-            Filter.Value = (sender as TextBox).Text;
+            Filter.Value = (sender as TextBox)!.Text;
             _parent.Apply();
         }
     }

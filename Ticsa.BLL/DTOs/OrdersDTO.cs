@@ -9,7 +9,7 @@ namespace Ticsa.BLL.DTOs {
         public Guid IdPartner => BaseEntity!.IdPartner;
         public Orders? BaseEntity { get; set; }
         public DateTime OrderDate => BaseEntity!.OrderDate;
-        public string OrderTag => BaseEntity!.OrderTag;
+        public string OrderTag => BaseEntity!.OrderTag!;
         public Guid Id => BaseEntity!.Id;
 
         public OrdersDTO Init(PartnersDP partnersDP) {

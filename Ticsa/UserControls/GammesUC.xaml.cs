@@ -20,8 +20,8 @@ namespace Ticsa.UserControls {
         public GammesUC() {
             InitializeComponent();
             _menu = (ContextMenu)Resources["ManagerConnectionContextMenu"];
-            FilterPopupGammesContent.Content = new FilterUC(Model.Gammes);
-            FilterPopupLotsContent.Content = new FilterUC(Model.Lots);
+            FilterPopupGammesContent.Content = new FilterUC(Model.Gammes!);
+            FilterPopupLotsContent.Content = new FilterUC(Model.Lots!);
             Model.LoadData();
         }
 

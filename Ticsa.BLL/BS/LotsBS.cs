@@ -21,7 +21,7 @@ namespace Ticsa.BLL.BS {
             return dto;
         }
         public IEnumerable<LotsDTO?> GetByIdGamme(Guid idGamme) =>
-             _dp.GetbyIdGamme(idGamme).Select(ToDTO);
+             _dp!.GetbyIdGamme(idGamme).Select(ToDTO);
         public override bool Delete(Guid id) {
             _orderContentsDP.Deletes(x => x.IdLot == id);
             return base.Delete(id);

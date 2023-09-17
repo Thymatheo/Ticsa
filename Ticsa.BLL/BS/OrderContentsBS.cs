@@ -19,7 +19,7 @@ namespace Ticsa.BLL.BS {
             return dto;
         }
         public IEnumerable<OrderContentsDTO?> GetByIdOrder(Guid idOrder) =>
-            _dp.GetByIdOrder(idOrder).Select(ToDTO);
+            _dp!.GetByIdOrder(idOrder).Select(ToDTO);
 
         public override OrderContentsDTO? Add(OrderContents entity) {
             Lots? lot = _lotsDP.Get(entity.IdLot);

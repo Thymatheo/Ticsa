@@ -20,17 +20,17 @@ namespace Ticsa.ViewModels {
         public FiltrableCollection<GammesDTO?>? Gammes { get; set; }
         public FiltrableCollection<LotsDTO?>? Lots { get; set; }
         public ObservableCollection<PartnersDTO?>? Partners { get; set; }
-        public GammesDTO LastSelectedGamme { get; set; }
-        public LotsDTO LastSelectedLots { get; set; }
+        public GammesDTO? LastSelectedGamme { get; set; }
+        public LotsDTO? LastSelectedLots { get; set; }
         public GammesUCVM() {
             Task.Run(LoadData).Wait();
         }
         public void LoadData() {
             Gammes = new(GammesBS.Gets,
-                new StringFilter("Partner", (obj) => ((GammesDTO)obj).Partner!.CompanyName),
+                new StringFilter("Partner", (obj) => ((GammesDTO)obj).Partner!.CompanyName!),
                 new StringFilter("Label", (obj) => ((GammesDTO)obj).Label));
             Lots = new(LotsBS.Gets,
-                new StringFilter("Gamme", (obj) => ((LotsDTO)obj).Gamme!.Label),
+                new StringFilter("Gamme", (obj) => ((LotsDTO)obj).Gamme!.Label!),
                 new IntFilter("Quantity", (obj) => ((LotsDTO)obj).Quantity),
                 new DateFilter("Date de reception", (obj) => ((LotsDTO)obj).EntryDate),
                 new DateFilter("Date d'expiration", (obj) => ((LotsDTO)obj).ExpirationDate));

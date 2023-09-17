@@ -8,12 +8,12 @@ namespace Ticsa.BLL.DTOs {
         public PartnerTypes? PartnerType { get; set; }
         public Partners? BaseEntity { get; set; }
         public Guid IdPartnerType => BaseEntity!.IdPartnerType;
-        public string FirstName => BaseEntity!.FirstName;
-        public string LastName => BaseEntity!.LastName;
-        public string CompanyName => BaseEntity!.CompanyName;
-        public string Email => BaseEntity!.Email;
+        public string FirstName => BaseEntity!.FirstName!;
+        public string LastName => BaseEntity!.LastName!;
+        public string CompanyName => BaseEntity!.CompanyName!;
+        public string Email => BaseEntity!.Email!;
         public int PhoneNumber => BaseEntity!.PhoneNumber;
-        public string PostalAddress => BaseEntity!.PostalAddress;
+        public string PostalAddress => BaseEntity!.PostalAddress!;
         public int PostalCode => BaseEntity!.PostalCode;
         public Guid Id => BaseEntity!.Id;
 
